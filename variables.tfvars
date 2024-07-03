@@ -1,0 +1,6 @@
+os_auth_url          = "http://10.100.1.31:5000"
+os_project_name      = "challenger-18"
+os_username          = "challenger-18" 
+os_region_name       = "RegionOne"
+os_user_domain_name  = "Default"
+os_project_domain_id = "default"
