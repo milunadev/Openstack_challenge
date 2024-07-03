@@ -1,3 +1,16 @@
+variable "public_instance_parameters" {
+  type = map(any)
+  default = {
+    instance_name = "ubuntu-22-04"
+    flavor_name   = "m1.tiny"
+    key_pair = "PuppetKey"
+  }
+}
+
+variable "public_network_name" {
+  default = "PUBLIC"
+}
+
 # variable "public_network_id" {
 #   description = "The ID of the public network"
 #   type        = string
