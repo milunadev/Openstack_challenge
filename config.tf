@@ -16,5 +16,4 @@ provider "openstack" {
   region            = var.os_region_name
   user_domain_name  = var.os_user_domain_name
   project_domain_id = var.os_project_domain_id
-  identity_api_version = 3
 }
