@@ -16,3 +16,13 @@ resource "openstack_compute_instance_v2" "public_instance" {
     name = data.openstack_networking_network_v2.public_network.name
   }
 }
+
+resource "openstack_blockstorage_volume_v3" "public_instance_volume" {
+  name = "${var.public_instance_parameters["instance_name"]}-volume"
+  size = 10
+}
+
+resource "openstack_compute_volume_attach_v2" "public_instance_volume_attach" {
+  instance_id = openstack_compute_instance_v2.public_instance.id
+  volume_id = openstack_blockstorage_volume_v3.public_instance_volume.id
+}
