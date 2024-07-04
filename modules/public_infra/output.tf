@@ -9,3 +9,4 @@ output "public_network_id" {
 output "public_instance_ip" {
   value = openstack_compute_instance_v2.public_instance.access_ip_v4
 }
+
