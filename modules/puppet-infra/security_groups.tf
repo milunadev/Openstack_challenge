@@ -17,7 +17,7 @@ resource "openstack_networking_secgroup_rule_v2" "allow_puppet_server_8140" {
   direction = "ingress"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "allow_ssh" {
+resource "openstack_networking_secgroup_rule_v2" "allow_ssh_server" {
   description = "Allow SSH from public network"
   port_range_min = 22
   port_range_max = 22
@@ -29,7 +29,7 @@ resource "openstack_networking_secgroup_rule_v2" "allow_ssh" {
 }
 
 
-resource "openstack_networking_secgroup_rule_v2" "allow_icmp" {
+resource "openstack_networking_secgroup_rule_v2" "allow_icmp_server" {
   description = "Allow SSH from public network"
   protocol = "icmp"
   remote_ip_prefix = data.openstack_networking_subnet_v2.public_subnet_1.cidr
@@ -57,7 +57,7 @@ resource "openstack_networking_secgroup_rule_v2" "allow_puppet_client_8140" {
   direction = "ingress"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "allow_ssh" {
+resource "openstack_networking_secgroup_rule_v2" "allow_ssh_client" {
   description = "Allow SSH from public network"
   port_range_min = 22
   port_range_max = 22
@@ -69,7 +69,7 @@ resource "openstack_networking_secgroup_rule_v2" "allow_ssh" {
 }
 
 
-resource "openstack_networking_secgroup_rule_v2" "allow_icmp" {
+resource "openstack_networking_secgroup_rule_v2" "allow_icmp_client" {
   description = "Allow SSH from public network"
   protocol = "icmp"
   remote_ip_prefix = data.openstack_networking_subnet_v2.public_subnet_1.cidr
@@ -98,7 +98,7 @@ resource "openstack_networking_secgroup_rule_v2" "allow_puppet_db_5432" {
   direction = "ingress"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "allow_ssh" {
+resource "openstack_networking_secgroup_rule_v2" "allow_ssh_db" {
   description = "Allow SSH from public network"
   port_range_min = 22
   port_range_max = 22
@@ -110,7 +110,7 @@ resource "openstack_networking_secgroup_rule_v2" "allow_ssh" {
 }
 
 
-resource "openstack_networking_secgroup_rule_v2" "allow_icmp" {
+resource "openstack_networking_secgroup_rule_v2" "allow_icmp_db" {
   description = "Allow SSH from public network"
   protocol = "icmp"
   remote_ip_prefix = data.openstack_networking_subnet_v2.public_subnet_1.cidr
