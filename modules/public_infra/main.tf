@@ -41,18 +41,6 @@ resource "openstack_compute_instance_v2" "public_instance" {
   }
 }
 
-################################################################
-#                OPENSTACK PRIVATE PORT
-################################################################
-resource "openstack_networking_port_v2" "private_interface" {
-  name = "${var.public_instance_parameters["instance_name"]}-private-interface"
-  network_id = data.openstack_networking_network_v2.private_network_1.id
-
-  fixed_ip {
-    subnet_id = data.openstack_networking_subnet_v2.private_subnet_1.id
-    ip_address = local.private_interface_ip
-  }
-}
 
 # resource "openstack_compute_instance_v2" "public_instance" {
 #   name = var.public_instance_parameters["instance_name"]
