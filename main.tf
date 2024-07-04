@@ -7,14 +7,14 @@ module "public_infra" {
   }
   public_network_name = "PUBLIC"
   providers = {
-    openstack = openstacks
+    openstack = openstack
   }
 }
 
 module "puppet-infra" {
   source = "./modules/puppet-infra"
   providers = {
-    openstack = openstacks
+    openstack = openstack
   }
 
   public_network_name = "PUBLIC"
