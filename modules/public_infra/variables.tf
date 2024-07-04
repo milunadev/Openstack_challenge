@@ -19,9 +19,6 @@ variable "private_network_2_name" {
   default = "PRIVATE-2"
 }
 
-variable "private_subnet_1" {
-  default = "private-subnet-1"
-}
 
 # variable "public_network_id" {
 #   description = "The ID of the public network"

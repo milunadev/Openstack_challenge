@@ -13,3 +13,7 @@ output "public_instance_ip" {
 output "private_interface_ip" {
   value = openstack_networking_port_v2.private_interface.fixed_ip
 }
+
+output "private_instance_ip" {
+  value = local.private_interface_ip
+}

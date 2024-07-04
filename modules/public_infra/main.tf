@@ -22,12 +22,22 @@ resource "openstack_compute_instance_v2" "public_instance" {
   network {
     name = var.public_network_name
   }
+  network {
+    port = openstack_networking_port_v2.private_interface.id
+  }
 
+  user_data = <<-EOF
+    #cloud-config
+    runcmd:
+        - ip link set ens8 up
+        - ip addr add ${local.private_interface_ip}/24 dev ens8
+    EOF 
   block_device {
     uuid = openstack_blockstorage_volume_v3.boot_volume.id
     source_type = "volume"
     boot_index = 0
     destination_type = "volume"
+    delete_on_termination = true
   }
 }
 
@@ -39,7 +49,8 @@ resource "openstack_networking_port_v2" "private_interface" {
   network_id = data.openstack_networking_network_v2.private_network_1.id
 
   fixed_ip {
-    subnet_id = data.openstack_networking_subnet_v2.private_network_1_subnet.id
+    subnet_id = data.openstack_networking_subnet_v2.private_subnet_1.id
+    ip_address = local.private_interface_ip
   }
 }
 
