@@ -11,10 +11,21 @@ module "public_infra" {
   }
 }
 
-module "puppet-client" {
-  source = "./modules/puppet-client"
+module "puppet-infra" {
+  source = "./modules/puppet-infra"
   providers = {
-    openstack = openstack
+    openstack = openstacks
   }
+
+  public_network_name = "PUBLIC"
+  private_network_1_name = "PRIVATE-1"
+  private_network_2_name = "PRIVATE-2"
 }
+
+# module "puppet-client" {
+#   source = "./modules/puppet-client"
+#   providers = {
+#     openstack = openstack
+#   }
+# }
 
