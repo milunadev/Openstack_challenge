@@ -26,12 +26,6 @@ resource "openstack_compute_instance_v2" "public_instance" {
     port = openstack_networking_port_v2.private_interface.id
   }
 
-  user_data = <<-EOF
-    #cloud-config
-    runcmd:
-        - ip link set ens8 up
-        - ip addr add ${local.private_interface_ip}/24 dev ens8
-    EOF 
   block_device {
     uuid = openstack_blockstorage_volume_v3.boot_volume.id
     source_type = "volume"
