@@ -7,7 +7,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   name        = "${var.public_instance_parameters["instance_name"]}-boot-volume"
   size        = 10
   image_id    = data.openstack_images_image_v2.ubuntu_22_04.id
-  volume_type = "default" 
+  volume_type = "__DEFAULT__" 
 }
 
 
