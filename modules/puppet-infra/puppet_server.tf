@@ -7,7 +7,6 @@ resource "openstack_blockstorage_volume_v3" "boot_volume_server" {
 
 resource "openstack_compute_instance_v2" "puppet_server" {
   name = "${var.project_name}-puppet-server"
-  image_id = data.openstack_images_image_v2.puppet_instance_image.id
   flavor_name = var.puppet_server_parameters["flavor_name"]
   key_pair = openstack_compute_keypair_v2.puppet_keypair.name
 

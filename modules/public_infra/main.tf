@@ -13,7 +13,6 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
 
 resource "openstack_compute_instance_v2" "public_instance" {
   name = var.public_instance_parameters["instance_name"]
-  image_id = data.openstack_images_image_v2.ubuntu_22_04.id
   flavor_name = var.public_instance_parameters["flavor_name"]
   key_pair = var.public_instance_parameters["key_pair"]
 
