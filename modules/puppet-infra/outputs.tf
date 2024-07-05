@@ -6,5 +6,6 @@ output "puppet_server_ip" {
 
 
 output "private_key_puppet" {
+  sensitive = true
   value = tls_private_key.puppet_key.private_key_pem
 }
