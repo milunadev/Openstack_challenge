@@ -26,6 +26,17 @@ resource "openstack_networking_secgroup_rule_v2" "allow_icmp_local" {
   direction = "ingress"
 }
 
+resource "openstack_networking_secgroup_rule_v2" "allow_ssh_local" {
+  description = "Allow Puppet Server ssh"
+  protocol = "tcp"
+  port_range_min = 22
+  port_range_max = 22
+  remote_ip_prefix = data.openstack_networking_subnet_v2.private_subnet_1.cidr
+  security_group_id = openstack_networking_secgroup_v2.puppet-server-sg.id
+  ethertype = "IPv4"
+  direction = "ingress"
+}
+
 resource "openstack_networking_secgroup_rule_v2" "allow_ssh_server" {
   description = "Allow SSH from public network"
   port_range_min = 22
