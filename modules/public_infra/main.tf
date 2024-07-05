@@ -45,7 +45,6 @@ resource "openstack_compute_instance_v2" "public_instance" {
   lifecycle {
     ignore_changes = [
       image_id,
-      all_tags,
       block_device[0].volume_size,
     ]
   }
