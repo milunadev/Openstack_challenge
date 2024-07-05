@@ -11,6 +11,12 @@ output "private_interface_ip" {
 }
 
 
+################################################################
+#                   PUPPET AGENT OUTPUTS
+################################################################
+output "puppet_agents_ips" {
+  value = module.puppet-infra.puppet_agents_ips
+}
 
 
 # output "puppet_server_ip" {

@@ -39,6 +39,12 @@ module "puppet-infra" {
     key_pair = "PuppetKey"
   }
 
+  puppet_db_parameters = {
+    flavor_name   = "m1.tiny"
+    volume_size   = 10
+    key_pair = "PuppetKey"
+  }
+
 }
 
 # module "puppet-client" {
