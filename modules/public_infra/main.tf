@@ -1,6 +1,5 @@
 data "openstack_images_image_v2" "ubuntu_22_04" {  
     name = "Ubuntu 22.04 LTS"
-    most_recent = true
 }
 
 resource "openstack_blockstorage_volume_v3" "boot_volume" {
@@ -38,6 +37,19 @@ resource "openstack_compute_instance_v2" "public_instance" {
     echo "${var.private_puppet_key}" >> /home/ubuntu/.ssh/id_rsa
     chmod 600 /home/ubuntu/.ssh/id_rsa
   EOT
+
+  lifecycle {
+    ignore_changes = [
+      image_id,
+      all_metadata,
+      all_tags,
+      block_device[0].volume_size,
+      network[0].fixed_ip_v4,
+      network[0].fixed_ip_v6,
+      network[0].floating_ip,
+      network[0].port
+    ]
+  }
 }
 
 
