@@ -9,7 +9,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   volume_type = "__DEFAULT__" 
 
   lifecycle {
-    ignore_changes = [ image_id ]
+    ignore_changes = [ image_id, metadata, id ]
   }
 }
 
@@ -44,6 +44,9 @@ resource "openstack_compute_instance_v2" "public_instance" {
 
   lifecycle {
     ignore_changes = [
+      access_ip_v4,
+      network,
+      uuid,
       image_id,
       block_device[0].volume_size,
     ]
