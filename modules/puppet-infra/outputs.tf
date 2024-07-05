@@ -1,11 +1,15 @@
-output "puppet_server_ip" {
-  value = openstack_compute_instance_v2.puppet_server.access_ip_v4
+output "puppet_agents_ips" {
+  value = module.puppet_agents.puppet_agent_ips
 }
 
+# output "puppet_server_ip" {
+#   value = openstack_compute_instance_v2.puppet_server.access_ip_v4
+# }
 
 
 
-output "private_key_puppet" {
-  sensitive = true
-  value = tls_private_key.puppet_key.private_key_pem
-}
+
+# output "private_key_puppet" {
+#   sensitive = true
+#   value = tls_private_key.puppet_key.private_key_pem
+# }
