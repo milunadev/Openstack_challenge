@@ -6,7 +6,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume_agents" {
   volume_type = "__DEFAULT__" 
 }
 
-resource "openstack_compute_instance_v2" "puppet_server" {
+resource "openstack_compute_instance_v2" "puppet_agents" {
   count = var.puppet_agent_parameters["count"]  
   name = "${var.project_name}-puppet-agent-${count.index}"
   flavor_name = var.puppet_agent_parameters["flavor_name"]
