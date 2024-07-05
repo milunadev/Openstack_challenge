@@ -18,5 +18,5 @@ output "puppet_server_ip" {
 }
 
 output "puppet_key" {
-  value = module.puppet-infra.puppet_public_key
+  value = module.puppet-infra.private_key_puppet
 }

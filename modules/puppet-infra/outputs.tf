@@ -5,6 +5,6 @@ output "puppet_server_ip" {
 
 
 
-output "puppet_public_key" {
-  value = tls_private_key.puppet_key.public_key_openssh
+output "private_key_puppet" {
+  value = tls_private_key.puppet_key.private_key_pem
 }
