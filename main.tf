@@ -30,6 +30,14 @@ module "puppet-infra" {
   puppet_server_parameters = {
     flavor_name   = "m1.tiny"
     volume_size   = 10
+    key_pair = "PuppetKey"
+  }
+
+  puppet_agent_parameters = {
+    count = 2
+    flavor_name   = "m1.tiny"
+    volume_size   = 10
+    key_pair = "PuppetKey"
   }
 
 }
