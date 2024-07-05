@@ -45,13 +45,8 @@ resource "openstack_compute_instance_v2" "public_instance" {
   lifecycle {
     ignore_changes = [
       image_id,
-      all_metadata,
       all_tags,
       block_device[0].volume_size,
-      network[0].fixed_ip_v4,
-      network[0].fixed_ip_v6,
-      network[0].floating_ip,
-      network[0].port
     ]
   }
 }
