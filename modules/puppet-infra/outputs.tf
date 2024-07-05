@@ -1,5 +1,5 @@
 output "puppet_agents_ips" {
-  value = module.puppet_agents.puppet_agent_ips
+  value = module.puppet_agents.puppet_agents_ips
 }
 
 # output "puppet_server_ip" {
