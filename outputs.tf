@@ -1,18 +1,19 @@
-output "ubuntu22_image_id" {
-  value = module.public_infra.ubuntu_id
+
+################################################################
+#                   PUBLIC INFRASTRUCTURE OUTPUTS
+################################################################
+
+output "public_instance_public_ip" {
+  value = module.public_infra.public_instance_ip
 }
 
-output "public_network_id" {
-  value = module.public_infra.public_network_id
-}
-
-output "private_interface_ip" {
+output "public_instance_private_ip" {
   value = module.public_infra.private_interface_ip
 }
 
 
 ################################################################
-#                   PUPPET AGENT OUTPUTS
+#                   PUPPET INFRASTRUCTURE OUTPUTS
 ################################################################
 output "puppet_agents_ips" {
   value = module.puppet-infra.puppet_agents_ips
@@ -25,12 +26,3 @@ output "puppet_server_ip" {
 output "puppet_db_ip" {
   value = module.puppet-infra.puppet_db_ip
 }
-
-# output "puppet_server_ip" {
-#   value = module.puppet-infra.puppet_server_ip
-# }
-
-# output "private_key_puppet" {
-#   value = module.puppet-infra.private_key_puppet
-#   sensitive = true
-# }
