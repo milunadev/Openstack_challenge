@@ -37,4 +37,3 @@ override.tf.json
 terraform.rc
 credenciales.sh
 
-*.sh
