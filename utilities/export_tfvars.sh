@@ -82,3 +82,13 @@ set_env_variable "TF_VAR_os_password" "$os_password"
 set_env_variable "TF_VAR_os_region_name" "$os_region_name"
 set_env_variable "TF_VAR_os_user_domain_name" "$os_user_domain_name"
 set_env_variable "TF_VAR_os_project_domain_id" "$os_project_domain_id"
+
+source "$CONFIG_FILE"
+
+echo "Environment variables set:"
+echo "OS_AUTH_URL=$TF_VAR_os_auth_url"
+echo "OS_PROJECT_NAME=$TF_VAR_os_project_name"
+echo "OS_USERNAME=$TF_VAR_os_username"
+echo "OS_REGION_NAME=$TF_VAR_os_region_name"
+echo "OS_USER_DOMAIN_NAME=$TF_VAR_os_user_domain_name"
+echo "OS_PROJECT_DOMAIN_ID=$TF_VAR_os_project_domain_id"
