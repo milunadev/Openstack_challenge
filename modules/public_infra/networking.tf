@@ -35,6 +35,6 @@ resource "openstack_networking_port_v2" "private_interface" {
   ]
 
   lifecycle {
-    ignore_changes = [security_groups, access_ip_v4, all_fixed_ips, all_tags]
+    ignore_changes = [all_fixed_ips, all_tags]
   }
 }
