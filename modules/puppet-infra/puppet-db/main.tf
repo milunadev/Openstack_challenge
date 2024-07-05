@@ -23,7 +23,7 @@ resource "openstack_compute_instance_v2" "puppet_db" {
     destination_type = "volume"
     delete_on_termination = true
   }
-  depends_on = [ openstack_blockstorage_volume_v3.boot_db_server ]
+  depends_on = [ openstack_blockstorage_volume_v3.boot_volume_db ]
 }
 
 
