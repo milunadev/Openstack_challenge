@@ -29,4 +29,8 @@ resource "openstack_networking_port_v2" "private_interface" {
   fixed_ip {
     subnet_id = data.openstack_networking_subnet_v2.private_subnet_1.id
   }
+
+  security_group_ids = [
+    "ab7bc290-df69-4a70-aba3-db53183c9ae8"
+  ]
 }

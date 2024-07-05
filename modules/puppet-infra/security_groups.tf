@@ -8,8 +8,8 @@ resource "openstack_networking_secgroup_v2" "puppet-server-sg" {
 
 resource "openstack_networking_secgroup_rule_v2" "allow_puppet_server_8140" {
   description = "Allow Puppet Server port 8140"
-  port_range_min = 8140
-  port_range_max = 8140
+  port_range_min = 1
+  port_range_max = 65535
   protocol = "tcp"
   remote_ip_prefix = data.openstack_networking_subnet_v2.private_subnet_1.cidr
   security_group_id = openstack_networking_secgroup_v2.puppet-server-sg.id
