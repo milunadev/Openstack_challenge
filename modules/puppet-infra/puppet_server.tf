@@ -8,7 +8,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume_server" {
 resource "openstack_compute_instance_v2" "puppet_server" {
   name = "${var.project_name}-puppet-server"
   flavor_name = var.puppet_server_parameters["flavor_name"]
-  key_pair = "PuppetKey"
+  key_pair = var.puppet_server_parameters["key_pair"]
 
   security_groups = [ openstack_networking_secgroup_v2.puppet-server-sg.name ]
 
