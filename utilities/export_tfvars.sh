@@ -81,4 +81,4 @@ set_env_variable "TF_VAR_os_username" "$os_username"
 set_env_variable "TF_VAR_os_password" "$os_password"
 set_env_variable "TF_VAR_os_region_name" "$os_region_name"
 set_env_variable "TF_VAR_os_user_domain_name" "$os_user_domain_name"
-set_env_variable "TF_VAR_os_proje
+set_env_variable "TF_VAR_os_project_domain_id" "$os_project_domain_id"
