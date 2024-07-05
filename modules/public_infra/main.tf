@@ -7,6 +7,10 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   size        = 10
   image_id    = data.openstack_images_image_v2.ubuntu_22_04.id
   volume_type = "__DEFAULT__" 
+
+  lifecycle {
+    ignore_changes = [ image_id ]
+  }
 }
 
 
