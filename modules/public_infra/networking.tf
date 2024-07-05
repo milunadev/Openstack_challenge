@@ -33,4 +33,8 @@ resource "openstack_networking_port_v2" "private_interface" {
   security_group_ids = [
     "ab7bc290-df69-4a70-aba3-db53183c9ae8"
   ]
+
+  lifecycle {
+    ignore_changes = [security_groups, access_ip_v4, all_fixed_ips, all_tags]
+  }
 }

@@ -46,7 +46,6 @@ resource "openstack_compute_instance_v2" "public_instance" {
     ignore_changes = [
       access_ip_v4,
       network,
-      uuid,
       image_id,
       block_device[0].volume_size,
     ]
