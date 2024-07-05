@@ -14,3 +14,8 @@ sudo ip addr add 192.168.10.232/24 dev ens9
 sudo ip link set dev ens9 up
 ```
 
+```bash
+python3 -m venv tfvenv
+source tfvenv/bin/activate
+pip3 install tftest
+```
