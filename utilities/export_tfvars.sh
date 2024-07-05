@@ -38,7 +38,7 @@ os_project_name=$(read_with_default "Project Name" "$TF_VAR_os_project_name")
 while [[ -z "$os_project_name" ]]; do
   echo "Project Name is required!"
   os_project_name=$(read_with_default "Project Name" "$TF_VAR_os_project_name")
-end
+done
 
 os_username=$(read_with_default "Username" "$TF_VAR_os_username")
 while [[ -z "$os_username" ]]; do
@@ -81,14 +81,4 @@ set_env_variable "TF_VAR_os_username" "$os_username"
 set_env_variable "TF_VAR_os_password" "$os_password"
 set_env_variable "TF_VAR_os_region_name" "$os_region_name"
 set_env_variable "TF_VAR_os_user_domain_name" "$os_user_domain_name"
-set_env_variable "TF_VAR_os_project_domain_id" "$os_project_domain_id"
-
-source "$CONFIG_FILE"
-
-echo "Environment variables set:"
-echo "OS_AUTH_URL=$TF_VAR_os_auth_url"
-echo "OS_PROJECT_NAME=$TF_VAR_os_project_name"
-echo "OS_USERNAME=$TF_VAR_os_username"
-echo "OS_REGION_NAME=$TF_VAR_os_region_name"
-echo "OS_USER_DOMAIN_NAME=$TF_VAR_os_user_domain_name"
-echo "OS_PROJECT_DOMAIN_ID=$TF_VAR_os_project_domain_id"
+set_env_variable "TF_VAR_os_proje
