@@ -10,3 +10,10 @@ output "private_interface_ip" {
   value = module.public_infra.private_interface_ip
 }
 
+
+
+
+output "puppet_server_ip" {
+  value = module.puppet-infra.puppet_server_ip
+}
+
