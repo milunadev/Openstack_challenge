@@ -48,6 +48,7 @@ resource "openstack_compute_instance_v2" "public_instance" {
       network,
       image_id,
       block_device[0].volume_size,
+      port
     ]
   }
 }
