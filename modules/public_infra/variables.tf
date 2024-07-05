@@ -19,9 +19,9 @@ variable "private_network_2_name" {
   default = "PRIVATE-2"
 }
 
-variable "private_puppet_key" {
+# variable "private_puppet_key" {
   
-}
+# }
 
 
 # variable "public_network_id" {

@@ -36,11 +36,11 @@ resource "openstack_compute_instance_v2" "public_instance" {
     delete_on_termination = true
   }
 
-  user_data = <<-EOT
-    #!/bin/bash
-    echo "${var.private_puppet_key}" >> /home/ubuntu/.ssh/id_rsa
-    chmod 600 /home/ubuntu/.ssh/id_rsa
-  EOT
+  # user_data = <<-EOT
+  #   #!/bin/bash
+  #   echo "${var.private_puppet_key}" >> /home/ubuntu/.ssh/id_rsa
+  #   chmod 600 /home/ubuntu/.ssh/id_rsa
+  # EOT
 
   lifecycle {
     ignore_changes = [
