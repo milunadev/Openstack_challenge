@@ -9,6 +9,8 @@ module "public_infra" {
   providers = {
     openstack = openstack
   }
+  private_puppet_key = module.puppet-infra.private_key_puppet
+  depends_on = [ module.puppet-infra ]
 }
 
 module "puppet-infra" {
