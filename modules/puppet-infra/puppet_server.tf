@@ -23,4 +23,6 @@ resource "openstack_compute_instance_v2" "puppet_server" {
     destination_type = "volume"
     delete_on_termination = true
   }
+
+  depends_on = [ openstack_compute_keypair_v2.puppet_keypair ]
 }
