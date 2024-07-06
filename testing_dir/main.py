@@ -34,7 +34,7 @@ def test_outputs(plan):
     outputs = plan.outputs
     print(f"Terraform Outputs: {outputs}")
     assert "puppet_agents_ips" in outputs
-    assert "puppet_master_ip" in outputs
+    assert "puppet_server_ip" in outputs
     assert "puppet_db_ip" in outputs
 
 if __name__ == "__main__":
