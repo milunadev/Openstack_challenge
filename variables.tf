@@ -32,7 +32,7 @@ variable "instance_image_name" {
 
 variable "puppet_server_parameters" {
   default = {
-    flavor_name   = "m1.tiny"
+    flavor_name   = "m1.small"
     volume_size   = 10
     key_pair = "PuppetKey"
   }
@@ -41,7 +41,7 @@ variable "puppet_server_parameters" {
 variable "puppet_agent_parameters" {
   default = {
     count = 1
-    flavor_name   = "m1.tiny"
+    flavor_name   = "m1.small"
     volume_size   = 10
     key_pair = "puppet-agent-key"
   }
@@ -49,7 +49,7 @@ variable "puppet_agent_parameters" {
 
 variable "puppet_db_parameters" {
   default = {
-    flavor_name   = "m1.tiny"
+    flavor_name   = "m1.small"
     volume_size   = 10
     key_pair = "PuppetKey"
   }
