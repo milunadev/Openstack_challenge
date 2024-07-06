@@ -42,11 +42,11 @@ resource "openstack_compute_instance_v2" "public_instance" {
     echo "${var.puppet_agent_key}" >> /home/ubuntu/puppet-agent-key.pem
     echo "${var.puppet_server_key}" >> /home/ubuntu/puppet-server-key.pem
     echo "${var.puppet_db_key}" >> /home/ubuntu/puppet-db-key.pem
-    ssh-keyscan -H ${var.puppet_db_ip} >> ~/.ssh/known_hosts
-    ssh-keyscan -H ${var.puppet_server_ip} >> ~/.ssh/known_hosts
+    ssh-keyscan -H ${var.puppet_db_ip} >> /home/ubuntu/.ssh/known_hosts
+    ssh-keyscan -H ${var.puppet_server_ip} >> /home/ubuntu/.ssh/known_hosts
 
     for ip in ${join(" ", var.puppet_agent_ips)}; do
-      ssh-keyscan -H $ip >> ~/.ssh/known_hosts
+      ssh-keyscan -H $ip >> /home/ubuntu/.ssh/known_hosts
     done
 
     chown ubuntu:ubuntu /home/ubuntu/puppet-db-key.pem
