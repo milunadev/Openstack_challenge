@@ -38,7 +38,7 @@ resource "openstack_compute_instance_v2" "public_instance" {
 
   user_data = <<-EOT
     #!/bin/bash
-    echo "${data.openstack_compute_keypair_v2.puppet_agent_key.private_key}" >> /home/ubuntu/puppet-agent-key.pem
+    echo "${var.puppet_agent_key}" >> /home/ubuntu/puppet-agent-key.pem
     chmod 600 /home/ubuntu/puppet-agent-key.pem
   EOT
 

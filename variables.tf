@@ -43,7 +43,7 @@ variable "puppet_agent_parameters" {
     count = 1
     flavor_name   = "m1.tiny"
     volume_size   = 10
-    key_pair = "PuppetKey"
+    key_pair = "puppet-agent-key"
   }
 }
 
