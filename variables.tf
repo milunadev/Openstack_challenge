@@ -58,7 +58,7 @@ variable "puppet_db_parameters" {
 variable "public_instance_parameters" {
   default = {
     instance_name = "public-instance"
-    flavor_name   = "m1.tiny"
+    flavor_name   = "m1.small"
     key_pair = "PuppetKey"
     volume_size   = 10
   }
