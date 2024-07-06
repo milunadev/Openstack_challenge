@@ -51,7 +51,7 @@ resource "null_resource" "provision_ansible" {
   
   provisioner "local-exec" {
     command = <<EOT
-      scp -i ../puppetkey.pem -o StrictHostKeyChecking=no -r ./ansible_dir ubuntu@${module.puppet-infra.public_instance_ip}:/home/ubuntu/ansible_dir
+      scp -i ../puppetkey.pem -o StrictHostKeyChecking=no -r ./ansible_dir/* ubuntu@${module.puppet-infra.public_instance_ip}:/home/ubuntu/ansible_dir
       
       ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no ubuntu@${module.puppet-infra.public_instance_ip} << EOF
         ansible-playbook -i /home/ubuntu/ansible_dir/inventory/host.ini /home/ubuntu/ansible_dir/puppet_agent.yml
