@@ -4,14 +4,10 @@
   become: yes
   tasks:
     - name: Download Puppet release package
-      get_url:
-        url: https://apt.puppet.com/puppet7-release-jammy.deb
-        dest: /tmp/puppet7-release-jammy.deb
+      command: wget https://apt.puppet.com/puppet7-release-jammy.deb -O /tmp/puppet7-release-jammy.deb
 
     - name: Install Puppet release package
-      dpkg:
-        name: /tmp/puppet7-release-jammy.deb
-        state: present
+      command: dpkg -i /tmp/puppet7-release-jammy.deb
 
     - name: Update APT cache
       apt:
@@ -34,6 +30,22 @@
         state: present
 
     - name: Ensure Puppet Agent is enabled and started
+      systemd:
+        name: puppet
+        enabled: yes
+        state: started
+
+    - name: Ensure Puppet configuration directory exists
+      file:
+        path: /etc/puppetlabs/puppet
+        state: directory
+
+    - name: Configure Puppet Agent
+      template:
+        src: puppet.conf.j2
+        dest: /etc/puppetlabs/puppet/puppet.conf
+
+    - name: Ensure Puppet Agent service is enabled and started
       systemd:
         name: puppet
         enabled: yes
