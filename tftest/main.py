@@ -16,7 +16,7 @@ def load_tf_vars():
 vars = load_tf_vars()
 
 @pytest.fixture
-def plan(directory='../', module_name='puppet-infra'):
+def plan(directory='.', module_name='puppet-infra'):
     tf = tftest.TerraformTest(module_name, directory)
     tf.setup()
     plan = tf.plan(output=True,tf_vars = vars)
