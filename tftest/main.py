@@ -1,6 +1,6 @@
 import os
 import tftest
-import unittest
+import pytest
 
 def load_tf_vars():
     return {
@@ -13,30 +13,11 @@ def load_tf_vars():
         'os_project_domain_id': os.getenv('TF_VAR_os_project_domain_id')
     }
 
-class TestPuppetInfra(unittest.TestCase):
+vars = load_tf_vars()
 
-    #Create a TerraformTest instance
-    @classmethod
-    def setUpClass(cls):
-        cls.tf = tftest.TerraformTest(../main.tf)
-        cls.vars = load_tf_vars()
-    def test_init(self):
-        """Test the init function"""
-        init = self.tf.init()
-        print(f"INIT RESPONSE: {init}")
-        self.assertEqual(init['retcode'],0)
-    
-    def test_plan(self):
-        """Test the terraform plan command with environment variables"""
-        self.tf.init()
-        plan = self.tf.plan(vars=self.vars)
-        if plan['retcode'] != 0:
-            print(f"terraform plan failed with retcode {plan['retcode']}")
-            print(f"stdout: {plan['stdout']}")
-            print(f"stderr: {plan['stderr']}")
-        self.assertEqual(plan['retcode'], 0)
-    
-
-    
-if __name__ == '__main__':
-    unittest.main()
+@pytest.fixture
+def plan(directory='../', module_name='puppet-infra'):
+    tf = tftest.TerraformTest(module_name, directory)
+    tf.setup()
+    plan = tf.plan(output=True,tf_vars = vars)
+    return plan
