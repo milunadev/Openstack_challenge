@@ -42,7 +42,7 @@ resource "local_file" "inventory" {
   content = templatefile("./ansible_dir/inventory.tpl", {
     puppet_agents_ips = module.puppet-infra.puppet_agents_ips
   })
-  filename = "${path.module}/ansible_dir/inventory/host.ini"
+  filename = "${path.module}/ansible_dir/inventory/hosts.ini"
 
 }
 
