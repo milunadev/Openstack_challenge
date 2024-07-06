@@ -42,13 +42,6 @@ resource "openstack_compute_instance_v2" "public_instance" {
     echo "${var.puppet_agent_key}" >> /home/ubuntu/puppet-agent-key.pem
     echo "${var.puppet_server_key}" >> /home/ubuntu/puppet-server-key.pem
     echo "${var.puppet_db_key}" >> /home/ubuntu/puppet-db-key.pem
-    ssh-keyscan -H ${var.puppet_db_ip} >> /home/ubuntu/.ssh/known_hosts
-    ssh-keyscan -H ${var.puppet_server_ip} >> /home/ubuntu/.ssh/known_hosts
-
-    for ip in ${join(" ", var.puppet_agent_ips)}; do
-      ssh-keyscan -H $ip >> /home/ubuntu/.ssh/known_hosts
-    done
-
     chown ubuntu:ubuntu /home/ubuntu/puppet-db-key.pem
     chown ubuntu:ubuntu /home/ubuntu/puppet-server-key.pem
     chown ubuntu:ubuntu /home/ubuntu/puppet-agent-key.pem
@@ -74,9 +67,7 @@ resource "null_resource" "reboot_public_instance" {
   provisioner "local-exec" {
     command = <<-EOT
       sleep 10
-      openstack server stop ${openstack_compute_instance_v2.public_instance.id}
-      sleep 45
-      openstack server start ${openstack_compute_instance_v2.public_instance.id}
+      openstack server reboot ${openstack_compute_instance_v2.public_instance.id}
       sleep 45
     EOT
   }
