@@ -21,6 +21,13 @@
     state: present
   become: yes
 
+- name: Adjust JVM heap size for Puppet Server
+  replace:
+    path: /etc/default/puppetserver
+    regexp: '^JAVA_ARGS="-Xms1g -Xmx1g"'
+    replace: 'JAVA_ARGS="-Xms512m -Xmx512m"'
+  become: yes
+
 - name: Ensure Puppet service is enabled and started
   systemd:
     name: puppetserver

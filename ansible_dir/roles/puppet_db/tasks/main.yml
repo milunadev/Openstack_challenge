@@ -1,4 +1,3 @@
-# roles/puppet_agent/tasks/main.yml
 ---
 - name: Download Puppet release package
   get_url:
@@ -15,9 +14,9 @@
     update_cache: yes
   become: yes
 
-- name: Install Puppet Agent
+- name: Install PuppetDB
   apt:
-    name: puppet-agent
+    name: puppetdb
     state: present
   become: yes
 
@@ -27,17 +26,3 @@
     enabled: yes
     state: started
   become: yes
-
-- name: Install PuppetDB CLI
-  apt:
-    name: puppetdb-cli
-    state: present
-  become: yes
-
-
-# - name: Configure Puppet agent
-#   template:
-#     src: puppet.conf.j2
-#     dest: /etc/puppetlabs/puppet/puppet.conf
-#   notify:
-#     - Restart Puppet agent
