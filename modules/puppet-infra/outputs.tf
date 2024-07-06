@@ -1,5 +1,5 @@
 output "puppet_agents_ips" {
-  value = [for agent in module.puppet_agents : agent.network[0].fixed_ip_v4]
+  value = module.puppet_agents.puppet_agents_ips
 }
 
 output "puppet_server_ip" {
