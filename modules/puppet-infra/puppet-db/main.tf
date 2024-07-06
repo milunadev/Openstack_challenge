@@ -6,7 +6,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume_db" {
 }
 
 resource "openstack_compute_instance_v2" "puppet_db" { 
-  name = "${var.project_name}-puppet-server"
+  name = "${var.project_name}-puppet-db"
   flavor_name = var.puppet_db_parameters["flavor_name"]
   key_pair = var.puppet_db_parameters["key_pair"]
   security_groups = [ openstack_networking_secgroup_v2.puppet-db-sg.name ]
