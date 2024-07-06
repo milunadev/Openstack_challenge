@@ -14,6 +14,17 @@ data "openstack_networking_subnet_v2" "private_subnet_1" {
     network_id = data.openstack_networking_network_v2.private_network_1.id
 }
 
+data "openstack_compute_keypair_v2" "puppet_db_key" {
+  name = var.puppet_db_key
+}
+
+data "openstack_compute_keypair_v2" "puppet_agent_key" {
+  name = var.puppet_agent_key
+}
+
+data "openstack_compute_keypair_v2" "puppet_server_key" {
+  name = var.puppet_server_key
+}
 
 ################################################################
 #                OPENSTACK PRIVATE PORT
