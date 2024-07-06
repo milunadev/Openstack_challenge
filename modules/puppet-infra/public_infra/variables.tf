@@ -13,3 +13,7 @@ variable "instance_image_name" {}
 variable "puppet_agent_key" {}
 variable "puppet_server_key" {}
 variable "puppet_db_key" {}
+
+variable "puppet_db_ip" {}
+variable "puppet_agent_ips" {}
+variable "puppet_server_ip" {}

@@ -46,6 +46,10 @@ module "public_instance" {
   puppet_agent_key = module.puppet_agents.puppet_agent_key
   puppet_db_key = module.puppet_db.puppet_db_key
   puppet_server_key = module.puppet_server.puppet_server_key
+
+  puppet_db_ip = module.puppet_db.puppet_db_ip
+  puppet_agent_ips = module.puppet_agents.puppet_agents_ips
+  puppet_server_ip = module.puppet_server.puppet_server_ip
   providers = {
     openstack = openstack
   }
