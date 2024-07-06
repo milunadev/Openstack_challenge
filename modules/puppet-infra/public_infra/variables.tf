@@ -10,6 +10,6 @@ variable "private_network_2_name" {}
 
 variable "instance_image_name" {}
 
-variable "puppet_server_key" {}
 variable "puppet_agent_key" {}
+variable "puppet_server_key" {}
 variable "puppet_db_key" {}

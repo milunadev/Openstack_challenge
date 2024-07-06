@@ -42,15 +42,13 @@ module "public_instance" {
   private_network_2_name = var.private_network_2_name
   instance_image_name = var.instance_image_name
   public_instance_parameters = var.public_instance_parameters
-  
-  puppet_agent_key = var.puppet_agent_key
-  puppet_server_key = var.puppet_server_parameters["key_pair"]
-  puppet_db_key = var.puppet_db_parameters["key_pair"]
+
+  puppet_agent_key = module.puppet_agents.puppet_agent_key
+  puppet_db_key = module.puppet_db.puppet_db_key
+  puppet_server_key = module.puppet_server.puppet_server_key
   providers = {
     openstack = openstack
   }
+
 }
 
-variable "puppet_agent_key" {
-  
-}

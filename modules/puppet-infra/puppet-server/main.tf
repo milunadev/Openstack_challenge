@@ -8,7 +8,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume_server" {
 resource "openstack_compute_instance_v2" "puppet_server" {
   name = "${var.project_name}-puppet-server"
   flavor_name = var.puppet_server_parameters["flavor_name"]
-  key_pair = var.puppet_server_parameters["key_pair"]
+  key_pair = openstack_compute_keypair_v2.puppet_server_key.name
   security_groups = [ openstack_networking_secgroup_v2.puppet-server-sg.name ]
 
 
@@ -66,4 +66,22 @@ resource "openstack_networking_secgroup_rule_v2" "allow_ssh_local" {
   security_group_id = openstack_networking_secgroup_v2.puppet-server-sg.id
   ethertype = "IPv4"
   direction = "ingress"
+}
+
+
+
+resource "tls_private_key" "server_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+resource "openstack_compute_keypair_v2" "puppet_server_key" {
+  name = "puppet-server-key"
+  public_key = tls_private_key.server_key.public_key_openssh
+
+  depends_on = [ tls_private_key.server_key ]
+}
+
+resource "local_file" "server_key_pem" {
+  content = tls_private_key.server_key.private_key_pem
+  filename = "${path.module}/key/puppet-server-key.pem"
 }

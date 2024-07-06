@@ -1,25 +1,32 @@
 # roles/puppet_agent/tasks/main.yml
 ---
 - name: Download Puppet release package
-  command: wget https://apt.puppet.com/puppet7-release-jammy.deb -O /tmp/puppet7-release-jammy.deb
+  get_url:
+    url: https://apt.puppet.com/puppet7-release-jammy.deb
+    dest: /tmp/puppet7-release-jammy.deb
+    mode: '0644'
 
 - name: Install Puppet release package
   command: dpkg -i /tmp/puppet7-release-jammy.deb
+  become: yes
 
 - name: Update APT cache
   apt:
     update_cache: yes
+  become: yes
 
 - name: Install Puppet Agent
   apt:
     name: puppet-agent
     state: present
+  become: yes
 
 - name: Ensure Puppet service is enabled and started
   systemd:
     name: puppet
     enabled: yes
     state: started
+  become: yes
     
 - name: Configure Puppet agent
   template:

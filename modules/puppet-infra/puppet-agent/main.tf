@@ -10,7 +10,7 @@ resource "openstack_compute_instance_v2" "puppet_agents" {
   count = var.puppet_agent_parameters["count"]  
   name = "${var.project_name}-puppet-agent-${count.index}"
   flavor_name = var.puppet_agent_parameters["flavor_name"]
-  key_pair = var.puppet_agent_parameters["key_pair"]
+  key_pair = openstack_compute_keypair_v2.puppet_agent_key.name
 
   security_groups = [ openstack_networking_secgroup_v2.puppet-agent-sg.name ]
 
@@ -68,4 +68,22 @@ resource "openstack_networking_secgroup_rule_v2" "allow_ssh_local" {
   security_group_id = openstack_networking_secgroup_v2.puppet-agent-sg.id
   ethertype = "IPv4"
   direction = "ingress"
+}
+
+
+
+resource "tls_private_key" "agent_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+resource "openstack_compute_keypair_v2" "puppet_agent_key" {
+  name = "puppet-agent-key"
+  public_key = tls_private_key.agent_key.public_key_openssh
+
+  depends_on = [ tls_private_key.agent_key ]
+}
+
+resource "local_file" "agent_key_pem" {
+  content = tls_private_key.agent_key.private_key_pem
+  filename = "${path.module}/key/puppet-agent-key.pem"
 }

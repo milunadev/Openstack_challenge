@@ -41,7 +41,13 @@ resource "openstack_compute_instance_v2" "public_instance" {
     apt-get update
     apt-get install -y ansible
     echo "${var.puppet_agent_key}" >> /home/ubuntu/puppet-agent-key.pem
+    echo "${var.puppet_server_key}" >> /home/ubuntu/puppet-server-key.pem
+    echo "${var.puppet_db_key}" >> /home/ubuntu/puppet-db-key.pem
+    chown ubuntu:ubuntu /home/ubuntu/puppet-db-key.pem
+    chown ubuntu:ubuntu /home/ubuntu/puppet-server-key.pem
     chown ubuntu:ubuntu /home/ubuntu/puppet-agent-key.pem
+    chmod 600 /home/ubuntu/puppet-db-key.pem
+    chmod 600 /home/ubuntu/puppet-server-key.pem
     chmod 600 /home/ubuntu/puppet-agent-key.pem
   EOT
 
