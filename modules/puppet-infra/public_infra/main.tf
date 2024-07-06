@@ -69,3 +69,17 @@ resource "openstack_compute_instance_v2" "public_instance" {
   }
 }
 
+
+resource "null_resource" "reboot_public_instance" {
+  provisioner "local-exec" {
+    command = <<-EOT
+      sleep 10
+      openstack server stop ${openstack_compute_instance_v2.public_instance.id}
+      sleep 45
+      openstack server start ${openstack_compute_instance_v2.public_instance.id}
+      sleep 45
+    EOT
+  }
+
+  depends_on = [openstack_compute_instance_v2.public_instance]
+}
