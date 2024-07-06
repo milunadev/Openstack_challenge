@@ -1,4 +1,3 @@
----
 - name: Download Puppet release package
   get_url:
     url: https://apt.puppet.com/puppet7-release-jammy.deb
@@ -26,3 +25,23 @@
     enabled: yes
     state: started
   become: yes
+
+- name: Check PuppetDB status
+  command: systemctl status puppetdb
+  register: puppetdb_status
+  ignore_errors: yes
+  become: yes
+
+- name: Debug PuppetDB status
+  debug:
+    var: puppetdb_status
+
+- name: Get PuppetDB logs
+  command: journalctl -xeu puppetdb.service
+  register: puppetdb_logs
+  ignore_errors: yes
+  become: yes
+
+- name: Debug PuppetDB logs
+  debug:
+    var: puppetdb_logs.stdout_lines

@@ -24,9 +24,18 @@
 - name: Adjust JVM heap size for Puppet Server
   replace:
     path: /etc/default/puppetserver
-    regexp: '^JAVA_ARGS="-Xms1g -Xmx1g"'
+    regexp: '^JAVA_ARGS="-Xms.* -Xmx.*"'
     replace: 'JAVA_ARGS="-Xms512m -Xmx512m"'
   become: yes
+
+- name: Verify JVM heap size for Puppet Server
+  command: cat /etc/default/puppetserver
+  register: puppetserver_config
+  become: yes
+
+- name: Debug Puppet Server configuration
+  debug:
+    var: puppetserver_config.stdout_lines
 
 - name: Ensure Puppet service is enabled and started
   systemd:
@@ -35,29 +44,3 @@
     state: started
   become: yes
 
-- name: Check Puppet Server status
-  command: systemctl status puppetserver
-  register: puppetserver_status
-  ignore_errors: yes
-  become: yes
-
-- name: Debug Puppet Server status
-  debug:
-    var: puppetserver_status
-
-- name: Get Puppet Server logs
-  command: journalctl -xeu puppetserver.service
-  register: puppetserver_logs
-  ignore_errors: yes
-  become: yes
-
-- name: Debug Puppet Server logs
-  debug:
-    var: puppetserver_logs.stdout_lines
-
-# - name: Configure Puppet agent
-#   template:
-#     src: puppet.conf.j2
-#     dest: /etc/puppetlabs/puppet/puppet.conf
-#   notify:
-#     - Restart Puppet agent
