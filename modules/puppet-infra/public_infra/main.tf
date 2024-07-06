@@ -58,12 +58,5 @@ resource "openstack_compute_instance_v2" "public_instance" {
       block_device[0].volume_size,
     ]
   }
-
-  depends_on = [ 
-    openstack_networking_secgroup_v2.public_instance_sg,
-    openstack_networking_port_v2.private_interface,
-    openstack_blockstorage_volume_v3.boot_volume]
-
-
 }
 

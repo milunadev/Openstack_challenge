@@ -32,6 +32,8 @@ resource "openstack_networking_port_v2" "private_interface" {
   lifecycle {
     ignore_changes = [all_fixed_ips, all_tags, network_id]
   }
+
+  depends_on = [ openstack_networking_secgroup_v2.public_instance_sg ]
 }
 
 
