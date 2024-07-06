@@ -22,10 +22,11 @@ module "puppet-infra" {
 
 
 
-
 resource "local_file" "inventory" {
   content = templatefile("./ansible_dir/inventory.tpl", {
     puppet_agents_ips = module.puppet-infra.puppet_agents_ips
+    puppet_server_ip = module.puppet-infra.puppet_server_ip
+    puppet_db_ip = module.puppet-infra.puppet_db_ip
   })
   filename = "${path.module}/ansible_dir/inventory/hosts.ini"
 

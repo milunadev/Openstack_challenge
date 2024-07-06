@@ -28,9 +28,9 @@
     state: started
   become: yes
     
-- name: Configure Puppet agent
-  template:
-    src: puppet.conf.j2
-    dest: /etc/puppetlabs/puppet/puppet.conf
-  notify:
-    - Restart Puppet agent
+# - name: Configure Puppet agent
+#   template:
+#     src: puppet.conf.j2
+#     dest: /etc/puppetlabs/puppet/puppet.conf
+#   notify:
+#     - Restart Puppet agent

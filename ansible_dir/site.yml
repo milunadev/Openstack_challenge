@@ -2,3 +2,11 @@
 - hosts: puppet_agents
   roles:
     - puppet_agent
+  
+- hosts: puppet_server
+  roles:
+    - puppet_server
+
+- hosts: puppet_db
+  roles:
+    - puppet_db
