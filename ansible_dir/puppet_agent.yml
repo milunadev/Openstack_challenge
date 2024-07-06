@@ -1,38 +1,39 @@
 ---
-- name: Configure Puppet Agent on Ubuntu 22.04
+- name: Configure Puppet Server and Agent on Ubuntu 22.04
   hosts: puppet_agents
   become: yes
   tasks:
-    - name: Add Puppet APT key
-      apt_key:
-        url: https://apt.puppet.com/DEB-GPG-KEY-puppet
+    - name: Download Puppet release package
+      get_url:
+        url: https://apt.puppet.com/puppet7-release-jammy.deb
+        dest: /tmp/puppet7-release-jammy.deb
+
+    - name: Install Puppet release package
+      dpkg:
+        name: /tmp/puppet7-release-jammy.deb
         state: present
-    
-    - name: Add Puppet repository to sources list
-      apt_repository:
-        repo: 'deb http://apt.puppet.com/ubuntu jammy puppet7'
-        state: present
-    
+
     - name: Update APT cache
       apt:
         update_cache: yes
+
+    - name: Install Puppet Server
+      apt:
+        name: puppetserver
+        state: present
+
+    - name: Ensure Puppet Server is enabled and started
+      systemd:
+        name: puppetserver
+        enabled: yes
+        state: started
 
     - name: Install Puppet Agent
       apt:
         name: puppet-agent
         state: present
 
-    - name: Ensure Puppet configuration directory exists
-      file:
-        path: /etc/puppetlabs/puppet
-        state: directory
-
-    - name: Configure Puppet Agent
-      template:
-        src: puppet.conf.j2
-        dest: /etc/puppetlabs/puppet/puppet.conf
-
-    - name: Enable and start Puppet Agent service
+    - name: Ensure Puppet Agent is enabled and started
       systemd:
         name: puppet
         enabled: yes
