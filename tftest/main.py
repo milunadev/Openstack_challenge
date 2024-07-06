@@ -21,3 +21,16 @@ def plan(directory='../', module_name='puppet-infra'):
     tf.setup()
     plan = tf.plan(output=True,tf_vars = vars)
     return plan
+
+def test_variables(plan):
+    tf_vars = plan.variables
+    assert "os_username" in tf_vars, "Missing os_username"
+    assert "os_project_name" in tf_vars, "Missing os_project_name"
+
+def test_outputs(plan):
+    assert "puppet_agents_ips" in plan.outputs
+    assert "puppet_master_ip" in plan.outputs
+    assert "puppet_db_ip" in plan.outputs
+
+if __name__ == "__main__":
+    pytest.main()
