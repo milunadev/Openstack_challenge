@@ -9,7 +9,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   volume_type = "__DEFAULT__" 
 
   lifecycle {
-    ignore_changes = [ image_id, metadata, id ]
+    ignore_changes = [ image_id, metadata, id, user_data ]
   }
 }
 
@@ -38,7 +38,10 @@ resource "openstack_compute_instance_v2" "public_instance" {
 
   user_data = <<-EOT
     #!/bin/bash
+    apt-get update
+    apt-get install -y ansible
     echo "${var.puppet_agent_key}" >> /home/ubuntu/puppet-agent-key.pem
+    chown ubuntu:ubuntu /home/ubuntu/puppet-agent-key.pem
     chmod 600 /home/ubuntu/puppet-agent-key.pem
   EOT
 

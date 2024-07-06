@@ -32,3 +32,28 @@ resource "openstack_compute_keypair_v2" "puppet_agent_key" {
 
   depends_on = [ tls_private_key.agent_key ]
 }
+
+resource "local_file" "agent_key_pem" {
+  content = tls_private_key.agent_key.private_key_pem
+  filename = "${path.module}/keys/puppet-agent-key.pem"
+}
+
+resource "local_file" "inventory" {
+  content = templatefile("./ansible_dir/inventory.tpl", {
+    puppet_agents_ips = module.puppet-infra.puppet_agents_ips
+  })
+  filename = "${path.module}/ansible_dir/inventory/host.ini"
+
+}
+
+resource "null_resource" "provision_ansible" {
+  depends_on = [ module.puppet-infra, local_file.inventory ]
+  
+  provisioner "local-exec" {
+    command = <<EOT
+      ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no ubuntu@${module.puppet-infra.public_instance_ip} << EOF
+        ansible-playbook -i ~/puppet_ansible/inventory/hosts.ini ~/puppet_ansible/puppet_agent.yml
+      EOF
+    EOT
+  }
+}

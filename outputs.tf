@@ -16,7 +16,7 @@ output "public_instance_private_ip" {
 #                   PUPPET INFRASTRUCTURE OUTPUTS
 ################################################################
 output "puppet_agents_ips" {
-  value = module.puppet-infra.puppet_agents_ips
+  value = [for agent in module.puppet-infra.puppet_agents_ips : agent.network[0].fixed_ip_v4] 
 }
 
 output "puppet_server_ip" {
