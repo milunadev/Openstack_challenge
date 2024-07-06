@@ -7,6 +7,6 @@
   roles:
     - puppet_server
 
-# - hosts: puppet_db
-#   roles:
-#     - puppet_db
+- hosts: puppet_db
+  roles:
+    - puppet_db

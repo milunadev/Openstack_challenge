@@ -28,15 +28,6 @@
     replace: 'JAVA_ARGS="-Xms512m -Xmx512m"'
   become: yes
 
-- name: Verify JVM heap size for Puppet Server
-  command: cat /etc/default/puppetserver
-  register: puppetserver_config
-  become: yes
-
-- name: Debug Puppet Server configuration
-  debug:
-    var: puppetserver_config.stdout_lines
-
 - name: Ensure Puppet service is enabled and started
   systemd:
     name: puppetserver
