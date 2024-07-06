@@ -3,4 +3,4 @@
 - hosts: puppet-agents
   become: yes
   roles:
-    - puppet-agents
+    - puppet-agent
