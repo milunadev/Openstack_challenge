@@ -54,7 +54,7 @@ resource "openstack_compute_instance_v2" "public_instance" {
     ]
   }
 
-  depends_on = [ openstack_networking_secgroup_v2.public_instance_sg ]
+  depends_on = [ openstack_networking_secgroup_v2.public_instance_sg, openstack_networking_port_v2.private_interface ]
 
 
 }
