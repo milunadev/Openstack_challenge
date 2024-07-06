@@ -45,7 +45,7 @@ resource "openstack_compute_instance_v2" "public_instance" {
     ssh-keyscan -H ${var.puppet_db_ip} >> ~/.ssh/known_hosts
     ssh-keyscan -H ${var.puppet_server_ip} >> ~/.ssh/known_hosts
 
-    for ip in ${join(" ", var.puppet_agents_ips)}; do
+    for ip in ${join(" ", var.puppet_agent_ips)}; do
       ssh-keyscan -H $ip >> ~/.ssh/known_hosts
     done
 
