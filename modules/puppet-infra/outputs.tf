@@ -10,3 +10,10 @@ output "puppet_db_ip" {
   value = module.puppet_db.puppet_db_ip
 }
 
+output "public_instance_ip" {
+  value = module.public_instance.public_instance_ip
+}
+
+output "public_instance_private_ip" {
+  value = module.public_instance.public_instance_private_ip
+}

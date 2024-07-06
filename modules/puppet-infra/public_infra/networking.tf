@@ -27,7 +27,7 @@ resource "openstack_networking_port_v2" "private_interface" {
   }
 
   security_group_ids = [
-    "ab7bc290-df69-4a70-aba3-db53183c9ae8"
+    openstack_networking_secgroup_v2.public_instance_sg.id
   ]
 
   lifecycle {

@@ -19,7 +19,7 @@ resource "openstack_compute_instance_v2" "public_instance" {
   flavor_name = var.public_instance_parameters["flavor_name"]
   key_pair = var.public_instance_parameters["key_pair"]
 
-  security_groups = [ openstack_networking_secgroup_v2.public-sg.name ]
+  security_groups = [ openstack_networking_secgroup_v2.public_instance_sg.name ]
 
   network {
     name = var.public_network_name
@@ -50,6 +50,8 @@ resource "openstack_compute_instance_v2" "public_instance" {
       block_device[0].volume_size,
     ]
   }
+
+  depends_on = [ openstack_networking_secgroup_v2.public_instance_sg ]
 
 
 }
