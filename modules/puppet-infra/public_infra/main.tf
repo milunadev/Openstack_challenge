@@ -9,7 +9,7 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   volume_type = "__DEFAULT__" 
 
   lifecycle {
-    ignore_changes = [ image_id, metadata, id, user_data ]
+    ignore_changes = [ image_id, metadata, id ]
   }
 }
 
