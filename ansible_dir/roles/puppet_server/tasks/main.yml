@@ -27,7 +27,27 @@
     enabled: yes
     state: started
   become: yes
-    
+
+- name: Check Puppet Server status
+  command: systemctl status puppetserver
+  register: puppetserver_status
+  ignore_errors: yes
+  become: yes
+
+- name: Debug Puppet Server status
+  debug:
+    var: puppetserver_status
+
+- name: Get Puppet Server logs
+  command: journalctl -xeu puppetserver.service
+  register: puppetserver_logs
+  ignore_errors: yes
+  become: yes
+
+- name: Debug Puppet Server logs
+  debug:
+    var: puppetserver_logs.stdout_lines
+
 # - name: Configure Puppet agent
 #   template:
 #     src: puppet.conf.j2
