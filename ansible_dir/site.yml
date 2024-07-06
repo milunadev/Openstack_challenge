@@ -1,0 +1,6 @@
+# site.yml
+---
+- hosts: puppet-agents
+  become: yes
+  roles:
+    - puppet_agent

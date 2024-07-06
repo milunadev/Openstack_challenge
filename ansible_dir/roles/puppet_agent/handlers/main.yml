@@ -1,0 +1,6 @@
+# roles/puppet_agent/handlers/main.yml
+---
+- name: Restart Puppet agent
+  systemd:
+    name: puppet
+    state: restarted
