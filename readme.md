@@ -18,6 +18,6 @@ sudo ip link set dev ens9 up
 python3 -m venv tfvenv
 source tfvenv/bin/activate
 pip3 install tftest
-pip3 install railroad-diagrams
+pip3 install pytest
 
 ```

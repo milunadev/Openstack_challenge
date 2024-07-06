@@ -14,10 +14,6 @@ data "openstack_networking_subnet_v2" "private_subnet_1" {
     network_id = data.openstack_networking_network_v2.private_network_1.id
 }
 
-locals {
-  private_interface_ip = cidrhost(data.openstack_networking_subnet_v2.private_subnet_1.cidr, 10)
-}
-
 
 ################################################################
 #                OPENSTACK PRIVATE PORT
@@ -37,4 +33,30 @@ resource "openstack_networking_port_v2" "private_interface" {
   lifecycle {
     ignore_changes = [all_fixed_ips, all_tags, network_id]
   }
+}
+
+
+################################################################
+
+
+resource "openstack_networking_secgroup_v2" "public_instance_sg" {
+  name = "${var.public_instance_parameters["instance_name"]}-sg"
+  description = "Security group for public instance"
+}
+
+
+resource "openstack_networking_secgroup_rule_v2" "allow_all_tcp" {
+  direction = "ingress"
+  ethertype = "IPv4"
+  protocol = "tcp"
+  remote_ip_prefix = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.public_instance_sg.id
+}
+
+resource "openstack_networking_secgroup_rule_v2" "allow_all_icmp" {
+  direction = "ingress"
+  ethertype = "IPv4"
+  protocol = "icmp"
+  remote_ip_prefix = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.public_instance_sg.id
 }

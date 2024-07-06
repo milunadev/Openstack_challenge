@@ -33,3 +33,16 @@ module "puppet_db" {
     openstack = openstack
   }
 }
+
+module "public_instance" {
+  count = var.deploy_public_instance ? 1 : 0
+  source = "./public_infra"
+  public_network_name = var.public_network_name
+  private_network_1_name = var.private_network_1_name
+  private_network_2_name = var.private_network_2_name
+  instance_image_name = var.instance_image_name
+  public_instance_parameters = var.public_instance_parameters
+  providers = {
+    openstack = openstack
+  }
+}

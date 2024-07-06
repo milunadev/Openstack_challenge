@@ -1,49 +1,21 @@
-module "public_infra" {
-  source = "./modules/public_infra"
-  public_instance_parameters = {
-    instance_name = "public-terra"
-    flavor_name   = "m1.tiny"
-    key_pair = "PuppetKey"
-  }
-  public_network_name = "PUBLIC"
-  providers = {
-    openstack = openstack
-  }
-  depends_on = [ module.puppet-infra ]
-}
-
 module "puppet-infra" {
   source = "./modules/puppet-infra"
   providers = {
     openstack = openstack
   }
 
-  project_name = "challenger18"
+  deploy_public_instance = var.deploy_public_instance
+  public_instance_parameters = var.public_instance_parameters
 
+  project_name = var.project_name
+  public_network_name = var.public_network_name
+  private_network_1_name = var.private_network_1_name
+  private_network_2_name = var.private_network_2_name
 
-  public_network_name = "PUBLIC"
-  private_network_1_name = "PRIVATE-1"
-  private_network_2_name = "PRIVATE-2"
-
-
-  puppet_server_parameters = {
-    flavor_name   = "m1.tiny"
-    volume_size   = 10
-    key_pair = "PuppetKey"
-  }
-
-  puppet_agent_parameters = {
-    count = 2
-    flavor_name   = "m1.tiny"
-    volume_size   = 10
-    key_pair = "PuppetKey"
-  }
-
-  puppet_db_parameters = {
-    flavor_name   = "m1.tiny"
-    volume_size   = 10
-    key_pair = "PuppetKey"
-  }
+  instance_image_name = var.instance_image_name
+  puppet_server_parameters = var.puppet_server_parameters
+  puppet_agent_parameters = var.puppet_agent_parameters
+  puppet_db_parameters = var.puppet_db_parameters
 
 }
 

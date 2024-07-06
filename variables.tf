@@ -1,3 +1,72 @@
+variable "project_name" {
+  default = "challenger18"
+}
+
+variable "deploy_public_instance" {
+  default = true
+}
+
+###########################################
+#         NETWORK RESOURCES VARIABLES
+###########################################
+
+variable "public_network_name" {
+  default = "PUBLIC"
+}
+
+variable "private_network_1_name" {
+  default = "PRIVATE-1"
+}
+
+variable "private_network_2_name" {
+  default = "PRIVATE-2"
+}
+
+###########################################
+#         INSTANCES RESOURCES VARIABLES 
+###########################################
+
+variable "instance_image_name" {
+  default = "Ubuntu 22.04 LTS"
+}
+
+variable "puppet_server_parameters" {
+  default = {
+    flavor_name   = "m1.tiny"
+    volume_size   = 10
+    key_pair = "PuppetKey"
+  }
+}
+
+variable "puppet_agent_parameters" {
+  default = {
+    count = 1
+    flavor_name   = "m1.tiny"
+    volume_size   = 10
+    key_pair = "PuppetKey"
+  }
+}
+
+variable "puppet_db_parameters" {
+  default = {
+    flavor_name   = "m1.tiny"
+    volume_size   = 10
+    key_pair = "PuppetKey"
+  }
+}
+
+variable "public_instance_parameters" {
+  default = {
+    instance_name = "public-instance"
+    flavor_name   = "m1.tiny"
+    key_pair = "PuppetKey"
+    volume_size   = 10
+  }
+}
+###########################################
+#         OPENSTACK PROVIDER VARIABLES
+###########################################
+
 variable "os_auth_url" {
   description = "The OpenStack authentication URL"
   type        = string
