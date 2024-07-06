@@ -10,7 +10,7 @@
     
     - name: Add Puppet repository to sources list
       apt_repository:
-        repo: 'deb http://apt.puppet.com/ubuntu jammy puppet6'
+        repo: 'deb http://apt.puppet.com/ubuntu jammy puppet7'
         state: present
     
     - name: Update APT cache
