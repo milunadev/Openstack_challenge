@@ -23,7 +23,7 @@ resource "openstack_compute_instance_v2" "puppet_server" {
     destination_type = "volume"
     delete_on_termination = true
   }
-  depends_on = [ openstack_blockstorage_volume_v3.boot_volume_server ]
+  depends_on = [ openstack_blockstorage_volume_v3.boot_volume_server, openstack_networking_secgroup_v2.puppet-server-sg, openstack_compute_keypair_v2.puppet_server_key ]
 }
 
 

@@ -25,7 +25,7 @@ resource "openstack_compute_instance_v2" "puppet_agents" {
     destination_type = "volume"
     delete_on_termination = true
   }
-  depends_on = [ openstack_blockstorage_volume_v3.boot_volume_agents ]
+  depends_on = [ openstack_blockstorage_volume_v3.boot_volume_agents, openstack_networking_secgroup_v2.puppet-agent-sg, openstack_compute_keypair_v2.puppet_agent_key ]
 }
 
 
@@ -48,6 +48,8 @@ resource "openstack_networking_secgroup_rule_v2" "allow_puppet_agent_8140" {
   security_group_id = openstack_networking_secgroup_v2.puppet-agent-sg.id
   ethertype = "IPv4"
   direction = "ingress"
+
+  depends_on = [ openstack_networking_secgroup_v2.puppet-agent-sg ]
 }
 
 resource "openstack_networking_secgroup_rule_v2" "allow_icmp_local" {
@@ -57,6 +59,8 @@ resource "openstack_networking_secgroup_rule_v2" "allow_icmp_local" {
   security_group_id = openstack_networking_secgroup_v2.puppet-agent-sg.id
   ethertype = "IPv4"
   direction = "ingress"
+
+  depends_on = [ openstack_networking_secgroup_v2.puppet-agent-sg ]
 }
 
 resource "openstack_networking_secgroup_rule_v2" "allow_ssh_local" {
@@ -68,6 +72,8 @@ resource "openstack_networking_secgroup_rule_v2" "allow_ssh_local" {
   security_group_id = openstack_networking_secgroup_v2.puppet-agent-sg.id
   ethertype = "IPv4"
   direction = "ingress"
+
+  depends_on = [ openstack_networking_secgroup_v2.puppet-agent-sg ]
 }
 
 

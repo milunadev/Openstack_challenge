@@ -17,7 +17,6 @@ module "puppet-infra" {
   puppet_agent_parameters = var.puppet_agent_parameters
   puppet_db_parameters = var.puppet_db_parameters
 
-  depends_on = [ openstack_compute_keypair_v2.puppet_agent_key ]
 }
 
 

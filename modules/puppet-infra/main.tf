@@ -50,5 +50,7 @@ module "public_instance" {
     openstack = openstack
   }
 
+  depends_on = [ module.puppet_agents, module.puppet_db, module.puppet_server ]
+
 }
 
