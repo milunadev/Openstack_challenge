@@ -31,8 +31,16 @@ resource "local_file" "inventory" {
 
 }
 
+resource "null_resource" "wait_for_public_instance" {
+  provisioner "local-exec" {
+    command = "sleep 30"
+  }
+
+  depends_on = [module.puppet-infra]
+}
+
 resource "null_resource" "provision_ansible" {
-  depends_on = [module.puppet-infra, local_file.inventory]
+  depends_on = [module.puppet-infra, local_file.inventory, null_resource.wait_for_public_instance]
 
   provisioner "local-exec" {
     command = <<-EOT
