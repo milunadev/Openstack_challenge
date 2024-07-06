@@ -16,10 +16,10 @@ def load_tf_vars():
 vars = load_tf_vars()
 
 @pytest.fixture
-def plan(directory='.', module_name='puppet-infra'):
-    tf = tftest.TerraformTest(module_name, directory)
+def plan():
+    tf = tftest.TerraformTest(tfdir='../')
     tf.setup()
-    plan = tf.plan(output=True,tf_vars = vars)
+    plan = tf.plan(output=True, tf_vars=vars)
     return plan
 
 def test_variables(plan):
@@ -28,9 +28,10 @@ def test_variables(plan):
     assert "os_project_name" in tf_vars, "Missing os_project_name"
 
 def test_outputs(plan):
-    assert "puppet_agents_ips" in plan.outputs
-    assert "puppet_master_ip" in plan.outputs
-    assert "puppet_db_ip" in plan.outputs
+    outputs = plan.outputs
+    assert "puppet_agents_ips" in outputs
+    assert "puppet_master_ip" in outputs
+    assert "puppet_db_ip" in outputs
 
 if __name__ == "__main__":
     pytest.main()
