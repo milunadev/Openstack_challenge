@@ -51,13 +51,10 @@ resource "null_resource" "provision_ansible" {
 
   provisioner "local-exec" {
     command = <<-EOT
-      # Transferir los playbooks de Ansible a la instancia pública
       scp -i ../puppetkey.pem -o StrictHostKeyChecking=no -r ./ansible_dir/* ubuntu@${module.puppet-infra.public_instance_ip}:/home/ubuntu/ansible_dir
       
-      # Añadir clave SSH del host al archivo known_hosts
       ssh-keyscan -H ${module.puppet-infra.public_instance_ip} >> ~/.ssh/known_hosts
       
-      # Ejecutar los playbooks de Ansible desde la instancia pública
       ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no ubuntu@${module.puppet-infra.public_instance_ip} << 'EOF'
         ansible-playbook -i /home/ubuntu/ansible_dir/inventory/hosts.ini /home/ubuntu/ansible_dir/puppet_agent.yml
       EOF
