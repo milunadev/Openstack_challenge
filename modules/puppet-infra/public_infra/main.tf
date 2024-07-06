@@ -9,10 +9,9 @@ resource "openstack_blockstorage_volume_v3" "boot_volume" {
   volume_type = "__DEFAULT__" 
 
   lifecycle {
-    ignore_changes = [ image_id, metadata, id ]
+    ignore_changes = [image_id, metadata, id]
   }
 }
-
 
 resource "openstack_compute_instance_v2" "public_instance" {
   name = var.public_instance_parameters["instance_name"]
@@ -60,7 +59,10 @@ resource "openstack_compute_instance_v2" "public_instance" {
     ]
   }
 
-  depends_on = [ openstack_networking_secgroup_v2.public_instance_sg, openstack_networking_port_v2.private_interface ]
+  depends_on = [ 
+    openstack_networking_secgroup_v2.public_instance_sg,
+    openstack_networking_port_v2.private_interface,
+    openstack_blockstorage_volume_v3.boot_volume]
 
 
 }
