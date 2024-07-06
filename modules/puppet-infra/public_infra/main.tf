@@ -48,8 +48,6 @@ resource "openstack_compute_instance_v2" "public_instance" {
     chmod 600 /home/ubuntu/puppet-db-key.pem
     chmod 600 /home/ubuntu/puppet-server-key.pem
     chmod 600 /home/ubuntu/puppet-agent-key.pem
-
-    reboot
   EOT
 
   lifecycle {
@@ -66,7 +64,7 @@ resource "openstack_compute_instance_v2" "public_instance" {
 resource "null_resource" "reboot_public_instance" {
   provisioner "local-exec" {
     command = <<-EOT
-      sleep 10
+      sleep 45
       openstack server reboot ${openstack_compute_instance_v2.public_instance.id}
       sleep 45
     EOT
