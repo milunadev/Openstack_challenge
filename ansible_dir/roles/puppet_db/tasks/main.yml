@@ -1,0 +1,43 @@
+# roles/puppet_agent/tasks/main.yml
+---
+- name: Download Puppet release package
+  get_url:
+    url: https://apt.puppet.com/puppet7-release-jammy.deb
+    dest: /tmp/puppet7-release-jammy.deb
+    mode: '0644'
+
+- name: Install Puppet release package
+  command: dpkg -i /tmp/puppet7-release-jammy.deb
+  become: yes
+
+- name: Update APT cache
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install Puppet Agent
+  apt:
+    name: puppet-agent
+    state: present
+  become: yes
+
+- name: Ensure PuppetDB service is enabled and started
+  systemd:
+    name: puppetdb
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Install PuppetDB CLI
+  apt:
+    name: puppetdb-cli
+    state: present
+  become: yes
+
+
+# - name: Configure Puppet agent
+#   template:
+#     src: puppet.conf.j2
+#     dest: /etc/puppetlabs/puppet/puppet.conf
+#   notify:
+#     - Restart Puppet agent

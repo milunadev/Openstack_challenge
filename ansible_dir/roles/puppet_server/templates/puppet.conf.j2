@@ -1,0 +1,9 @@
+# roles/puppet_agent/templates/puppet.conf.j2
+[main]
+certname = {{ inventory_hostname }}
+server = {{ puppet_server }}
+environment = production
+
+[agent]
+report = true
+runinterval = 1h
