@@ -48,6 +48,8 @@ resource "openstack_compute_instance_v2" "public_instance" {
     chmod 600 /home/ubuntu/puppet-db-key.pem
     chmod 600 /home/ubuntu/puppet-server-key.pem
     chmod 600 /home/ubuntu/puppet-agent-key.pem
+
+    reboot
   EOT
 
   lifecycle {
