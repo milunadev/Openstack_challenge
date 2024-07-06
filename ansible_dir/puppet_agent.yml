@@ -1,0 +1,23 @@
+---
+- name: Configure puppet agent
+  hosts: puppet_agents
+  become: yes
+  tasks:
+    - name: Add Puppet APT key
+      apt_key:
+        url: https://apt.puppet.com/DEB-GPG-KEY-puppet
+        state: present
+    
+    - name: Add Puppet repository t0o source list
+      apt_repository:
+        repo: 'deb http://apt.puppet.com/ubuntu focal puppet6'
+        state: present
+    
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Install Puppet Agent
+      apt:
+        name: puppet-agent
+        state: present
