@@ -3,27 +3,37 @@
   hosts: puppet_agents
   become: yes
   tasks:
-    - name: Download Puppet release package
-      get_url:
-        url: https://apt.puppet.com/puppet7-release-jammy.deb
-        dest: /tmp/puppet7-release-jammy.deb
-
-    - name: Install Puppet release package
-      dpkg:
-        name: /tmp/puppet7-release-jammy.deb
+    - name: Add Puppet APT key
+      apt_key:
+        url: https://apt.puppet.com/DEB-GPG-KEY-puppet
         state: present
-
+    
+    - name: Add Puppet repository to sources list
+      apt_repository:
+        repo: 'deb http://apt.puppet.com/ubuntu jammy puppet7'
+        state: present
+    
     - name: Update APT cache
       apt:
         update_cache: yes
 
-    - name: Install Puppet Server
+    - name: Install Puppet Agent
       apt:
-        name: puppetserver
+        name: puppet-agent
         state: present
 
-    - name: Ensure Puppet Server is enabled and started
+    - name: Ensure Puppet configuration directory exists
+      file:
+        path: /etc/puppetlabs/puppet
+        state: directory
+
+    - name: Configure Puppet Agent
+      template:
+        src: puppet.conf.j2
+        dest: /etc/puppetlabs/puppet/puppet.conf
+
+    - name: Enable and start Puppet Agent service
       systemd:
-        name: puppetserver
+        name: puppet
         enabled: yes
         state: started
