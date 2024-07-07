@@ -4,3 +4,8 @@ output "puppet_agents_ips" {
 output "puppet_agent_key" {
   value = local_file.agent_key_pem.content
 }
+output "puppet_agent_name" {
+  value = openstack_compute_instance_v2.puppet_agents.*.name
+}
+
+

@@ -35,6 +35,13 @@
     state: present
   become: yes
 
+- name: Add server hostname to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "127.0.1.1 {{ puppet_server_hostname }}.openstacklocal {{ puppet_server_hostname }}"
+    state: present
+  become: yes
+  
 - name: Ensure Puppet service is enabled and started
   systemd:
     name: puppetserver

@@ -26,3 +26,17 @@ output "puppet_server_ip" {
 output "puppet_db_ip" {
   value = module.puppet-infra.puppet_db_ip
 }
+
+
+output "puppet_agent_name" {
+  value = module.puppet-infra.puppet_agent_name
+}
+
+output "puppet_server_name" {
+  value = module.puppet-infra.puppet_server_name
+}
+
+
+output "puppet_db_name" {
+  value = module.puppet-infra.puppet_db_name
+}
