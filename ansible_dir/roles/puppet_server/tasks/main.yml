@@ -25,7 +25,7 @@
   replace:
     path: /etc/default/puppetserver
     regexp: '^JAVA_ARGS="-Xms.* -Xmx.*"'
-    replace: 'JAVA_ARGS="-Xms512m -Xmx512m"'
+    replace: 'JAVA_ARGS="-Xms1024m -Xmx1024m"'
   become: yes
 
 - name: Ensure Puppet service is enabled and started
@@ -34,4 +34,5 @@
     enabled: yes
     state: started
   become: yes
+  
 

@@ -27,10 +27,23 @@
     enabled: yes
     state: started
   become: yes
+
+- name: Verify entries in /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ puppet_server_ip }} puppet-server"
+    state: present
+  become: yes
+
+- name: Configure Puppet Agent
+  template:
+    src: puppet.conf.j2
+    dest: /etc/puppetlabs/puppet/puppet.conf
+  become: yes
+
+- name: Restart Puppet agent
+  systemd:
+    name: puppet
+    state: restarted
+    become: yes
     
-# - name: Configure Puppet agent
-#   template:
-#     src: puppet.conf.j2
-#     dest: /etc/puppetlabs/puppet/puppet.conf
-#   notify:
-#     - Restart Puppet agent
