@@ -28,11 +28,21 @@
     replace: 'JAVA_ARGS="-Xms1024m -Xmx1024m"'
   become: yes
 
+- name: Add puppet to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1 puppet"
+    state: present
+  become: yes
+
 - name: Ensure Puppet service is enabled and started
   systemd:
     name: puppetserver
     enabled: yes
     state: started
   become: yes
-  
+
+- name: Debug Puppet Server status
+  debug:
+    var: puppetserver_status
 
