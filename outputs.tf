@@ -29,7 +29,7 @@ output "puppet_db_ip" {
 
 
 output "puppet_agent_name" {
-  value = module.puppet-infra.puppet_agent_name
+  value = module.puppet-infra.puppet_agents_names
 }
 
 output "puppet_server_name" {
