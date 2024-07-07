@@ -45,5 +45,5 @@
   systemd:
     name: puppet
     state: restarted
-    become: yes
+  become: yes
     
