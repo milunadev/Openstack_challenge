@@ -18,7 +18,7 @@ output "public_instance_private_ip" {
   value = module.public_instance[0].public_instance_private_ip
 }
 
-output "puppet_agent_name" {
+output "puppet_agents_names" {
   value = module.puppet_agents.puppet_agents_names
 }
 
