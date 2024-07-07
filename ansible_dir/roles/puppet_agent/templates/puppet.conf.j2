@@ -1,10 +1,10 @@
 [main]
 certname = {{ inventory_hostname }}
-server = {{ puppet_server_hostname }}
+server = {{ puppet_server_hostname }}.openstacklocal
 environment = production
 
 [agent]
 certname = {{ inventory_hostname }}
-server = {{ puppet_server_hostname }}
+server = {{ puppet_server_hostname }}.openstacklocal
 environment = production
 
