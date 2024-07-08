@@ -17,9 +17,9 @@ set_env_variable() {
     local var_name=$1
     local var_value=$2
     if grep -q "export $var_name=" "$CONFIG_FILE"; then
-        sed -i "s|export $var_name=.*|export $var_name=\"$var_value\"|" "$CONFIG_FILE"
+        sed -i "s|export $var_name=.*|export $var_name='$var_value'|" "$CONFIG_FILE"
     else
-        echo "export $var_name=\"$var_value\"" >> "$CONFIG_FILE"
+        echo "export $var_name='$var_value'" >> "$CONFIG_FILE"
     fi
 }
 
