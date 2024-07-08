@@ -13,7 +13,7 @@ read_and_export_variable() {
     echo "export $var_name='$var_value'" >> "$CONFIG_FILE"
 }
 
-variables=("os_auth_url" "os_project_name" "os_username" "os_password" "os_region_name" "os_user_domain_name" "os_project_domain_id")
+variables=("os_auth_url" "os_project_name" "os_username" "os_region_name" "os_user_domain_name" "os_project_domain_id")
 
 for variable in "${variables[@]}"; do
     read_and_export_variable "TF_VAR_$variable"

@@ -1,4 +1,9 @@
 ---
+- name: Ensure APT cache is updated
+  apt:
+    update_cache: yes
+  become: yes
+  
 - name: Ensure psycopg2 is installed
   apt:
     name: python3-psycopg2
