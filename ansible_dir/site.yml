@@ -7,14 +7,14 @@
   roles:
     - puppet_server
 
-- hosts: puppet_db
-  roles:
-    - puppet_db
+# - hosts: puppet_db
+#   roles:
+#     - puppet_db
   
-- hosts: puppet_server
-  tasks:
-    - name: Restart Puppet Server
-      systemd:
-        name: puppetserver
-        state: restarted
-      become: yes
+# - hosts: puppet_server
+#   tasks:
+#     - name: Restart Puppet Server
+#       systemd:
+#         name: puppetserver
+#         state: restarted
+#       become: yes
