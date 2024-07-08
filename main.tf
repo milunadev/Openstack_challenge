@@ -79,3 +79,15 @@ resource "null_resource" "sign_certificate" {
     EOT
   }
 }
+
+resource "null_resource" "verify_puppet" {
+  depends_on = [null_resource.sign_certificate]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${module.puppet-infra.public_instance_ip} << 'EOF'
+        ansible-playbook -i /home/ubuntu/ansible_dir/inventory/hosts.ini /home/ubuntu/ansible_dir/playbooks/verify_puppet.yml
+      EOF
+    EOT
+  }
+}
