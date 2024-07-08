@@ -36,11 +36,35 @@
     state: started
   become: yes
 
+- name: Allow md5 authentication for PostgreSQL
+  lineinfile:
+    path: /etc/postgresql/12/main/pg_hba.conf
+    regexp: '^host'
+    line: 'host    all             all             127.0.0.1/32            md5'
+    state: present
+  become: yes
+
+- name: Allow md5 authentication for local connections
+  lineinfile:
+    path: /etc/postgresql/12/main/pg_hba.conf
+    regexp: '^local'
+    line: 'local   all             all                                     md5'
+    state: present
+  become: yes
+
+- name: Reload PostgreSQL to apply changes
+  systemd:
+    name: postgresql
+    state: reloaded
+  become: yes
+
 - name: Configure PostgreSQL for PuppetDB
   postgresql_db:
     name: puppetdb
     state: present
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
 - name: Create PuppetDB user for PostgreSQL
   postgresql_user:
@@ -49,6 +73,8 @@
     priv: 'puppetdb:ALL'
     state: present
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
 - name: Configure PuppetDB to use PostgreSQL
   template:
