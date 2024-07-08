@@ -1,4 +1,10 @@
 ---
+- name: Ensure psycopg2 is installed
+  apt:
+    name: python3-psycopg2
+    state: present
+  become: yes
+
 - name: Download Puppet release package
   get_url:
     url: https://apt.puppet.com/puppet7-release-jammy.deb
@@ -78,4 +84,3 @@
 - name: Debug PuppetDB status
   debug:
     var: puppetdb_status
-
