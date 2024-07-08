@@ -49,6 +49,37 @@
   set_fact:
     pg_hba_path: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
 
+- name: Allow trust authentication for PostgreSQL temporarily
+  lineinfile:
+    path: "{{ pg_hba_path }}"
+    regexp: '^host'
+    line: 'host    all             all             127.0.0.1/32            trust'
+    state: present
+  become: yes
+
+- name: Allow trust authentication for local connections temporarily
+  lineinfile:
+    path: "{{ pg_hba_path }}"
+    regexp: '^local'
+    line: 'local   all             all                                     trust'
+    state: present
+  become: yes
+
+- name: Reload PostgreSQL to apply temporary trust changes
+  systemd:
+    name: postgresql
+    state: reloaded
+  become: yes
+
+- name: Set password for postgres user
+  postgresql_user:
+    name: postgres
+    password: 'postgrespassword'
+    state: present
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
 - name: Allow md5 authentication for PostgreSQL
   lineinfile:
     path: "{{ pg_hba_path }}"
@@ -73,20 +104,11 @@
     state: present
   become: yes
 
-- name: Reload PostgreSQL to apply changes
+- name: Reload PostgreSQL to apply md5 changes
   systemd:
     name: postgresql
     state: reloaded
   become: yes
-
-- name: Set password for postgres user
-  postgresql_user:
-    name: postgres
-    password: 'postgrespassword'
-    state: present
-  become: yes
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
 
 - name: Configure PostgreSQL for PuppetDB
   postgresql_db:
