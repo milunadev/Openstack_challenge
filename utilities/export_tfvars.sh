@@ -9,7 +9,7 @@ CONFIG_FILE="$HOME/.bashrc"
 read_and_export_variable() {
     local var_name=$1
     read -p "Enter value for $var_name: " var_value
-    export $var_name="'$var_value'"
+    export $var_name="$var_value"
     echo "export $var_name='$var_value'" >> "$CONFIG_FILE"
 }
 
