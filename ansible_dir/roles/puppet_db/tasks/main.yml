@@ -122,7 +122,7 @@
 - name: Configure PuppetDB terminus on Puppet Master
   template:
     src: puppetdb_routes.yaml.j2
-    dest: /etc/puppetlabs/puppet/puppetdb.conf
+    dest: /etc/puppetlabs/puppet/routes.yaml
   become: yes
 
 - name: Restart Puppet Server
