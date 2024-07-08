@@ -191,3 +191,4 @@
 - name: Debug PuppetDB status
   debug:
     var: puppetdb_status
+
