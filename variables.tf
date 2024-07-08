@@ -40,7 +40,7 @@ variable "puppet_server_parameters" {
 
 variable "puppet_agent_parameters" {
   default = {
-    count = 1
+    count = 2
     flavor_name   = "m1.small"
     volume_size   = 10
     key_pair = "puppet-agent-key"
