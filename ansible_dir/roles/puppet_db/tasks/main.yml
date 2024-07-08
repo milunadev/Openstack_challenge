@@ -1,3 +1,4 @@
+---
 - name: Download Puppet release package
   get_url:
     url: https://apt.puppet.com/puppet7-release-jammy.deb
@@ -13,10 +14,40 @@
     update_cache: yes
   become: yes
 
-- name: Install PuppetDB
+- name: Install PuppetDB and PostgreSQL
   apt:
+    name:
+      - puppetdb
+      - puppetdb-termini
+      - postgresql
+    state: present
+  become: yes
+
+- name: Ensure PostgreSQL service is enabled and started
+  systemd:
+    name: postgresql
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Configure PostgreSQL for PuppetDB
+  postgresql_db:
     name: puppetdb
     state: present
+  become: yes
+
+- name: Create PuppetDB user for PostgreSQL
+  postgresql_user:
+    name: puppetdb
+    password: 'puppetdbpassword'
+    priv: 'puppetdb:ALL'
+    state: present
+  become: yes
+
+- name: Configure PuppetDB to use PostgreSQL
+  template:
+    src: puppetdb_database.ini.j2
+    dest: /etc/puppetlabs/puppetdb/conf.d/database.ini
   become: yes
 
 - name: Ensure PuppetDB service is enabled and started
@@ -24,6 +55,18 @@
     name: puppetdb
     enabled: yes
     state: started
+  become: yes
+
+- name: Configure PuppetDB terminus on Puppet Master
+  template:
+    src: puppetdb_routes.yaml.j2
+    dest: /etc/puppetlabs/puppet/puppetdb.conf
+  become: yes
+
+- name: Restart Puppet Server
+  systemd:
+    name: puppetserver
+    state: restarted
   become: yes
 
 - name: Check PuppetDB status
@@ -35,3 +78,4 @@
 - name: Debug PuppetDB status
   debug:
     var: puppetdb_status
+
