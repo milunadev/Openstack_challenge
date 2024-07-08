@@ -1,4 +1,3 @@
-# ansible/playbooks/sign_certificates.yml
 ---
 - hosts: puppet_server
   tasks:
