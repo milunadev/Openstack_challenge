@@ -129,6 +129,12 @@
     state: reloaded
   become: yes
 
+- name: Wait for PostgreSQL to reload
+  wait_for:
+    path: /var/run/postgresql/.s.PGSQL.5432
+    state: present
+    timeout: 15
+
 - name: Configure PostgreSQL for PuppetDB
   postgresql_db:
     name: puppetdb
