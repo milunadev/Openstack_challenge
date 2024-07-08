@@ -110,13 +110,22 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-- name: Create PuppetDB user for PostgreSQL
+- name: Create PuppetDB user for PostgreSQL without privileges
   postgresql_user:
     name: puppetdb
     password: 'puppetdbpassword'
-    priv: 'puppetdb:ALL'
-    db: puppetdb
     state: present
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Grant all privileges on puppetdb to puppetdb user
+  postgresql_privs:
+    db: puppetdb
+    privs: ALL
+    objs: ALL_IN_SCHEMA
+    type: table
+    roles: puppetdb
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
