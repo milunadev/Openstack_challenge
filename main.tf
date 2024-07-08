@@ -61,20 +61,6 @@ resource "null_resource" "provision_puppet" {
   }
 }
 
-
-# resource "null_resource" "provision_puppet_server" {
-#   depends_on = [null_resource.provision_puppet_agent]
-
-#   provisioner "local-exec" {
-#     command = <<-EOT
-#       ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${module.puppet-infra.public_instance_ip} << 'EOF'
-#         ansible-playbook -i /home/ubuntu/ansible_dir/inventory/hosts.ini /home/ubuntu/ansible_dir/site.yml  --extra-vars "puppet_server_ip=${module.puppet-infra.puppet_server_ip} puppet_db_ip=${module.puppet-infra.puppet_db_ip} puppet_server_hostname=${module.puppet-infra.puppet_server_name} puppet_db_hostname=${module.puppet-infra.puppet_db_name}" --tags puppet_server
-#       EOF
-#     EOT
-#   }
-# }
-
-
 resource "null_resource" "request_certificate" {
   depends_on = [ null_resource.provision_puppet ]
 
