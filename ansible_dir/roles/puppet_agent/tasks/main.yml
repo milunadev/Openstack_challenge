@@ -31,7 +31,7 @@
 - name: Verify entries in /etc/hosts
   lineinfile:
     path: /etc/hosts
-    line: "{{ puppet_server_ip }} {{ puppet_hostname }} {{ puppet_hostname }}.openstacklocal"
+    line: "{{ puppet_server_ip }} {{ puppet_server_hostname }} {{ puppet_server_hostname }}.openstacklocal"
     state: present
   become: yes
 
