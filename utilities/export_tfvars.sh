@@ -10,7 +10,7 @@ read_and_export_variable() {
     local var_name=$1
     read -p "Enter value for $var_name: " var_value
     export $var_name="$var_value"
-    echo "export $var_name=\"$var_value\"" >> "$CONFIG_FILE"
+    echo "export $var_name='$var_value'" >> "$CONFIG_FILE"
 }
 
 set_env_variable() {
@@ -27,7 +27,7 @@ variables=("os_auth_url" "os_project_name" "os_username" "os_password" "os_regio
 
 for variable in "${variables[@]}"; do
     read_and_export_variable "TF_VAR_$variable"
-    set_env_variable "TF_VAR_$variable" "${!variable}"
+    set_env_variable "TF_VAR_$variable" "$(eval echo \$TF_VAR_$variable)"
 done
 
 source "$CONFIG_FILE"
@@ -35,5 +35,5 @@ source "$CONFIG_FILE"
 echo "Environment variables set:"
 for variable in "${variables[@]}"; do
     var_name="TF_VAR_$variable"
-    echo "$var_name=\"${!var_name}\""
+    echo "$var_name=\"$(eval echo \$$var_name)\""
 done
