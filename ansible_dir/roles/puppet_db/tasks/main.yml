@@ -49,23 +49,23 @@
   set_fact:
     pg_hba_path: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
 
-- name: Allow trust authentication for PostgreSQL temporarily
+- name: Allow trust authentication for PostgreSQL
   lineinfile:
     path: "{{ pg_hba_path }}"
-    regexp: '^host'
+    regexp: '^host    all             all             127.0.0.1/32            .*$'
     line: 'host    all             all             127.0.0.1/32            trust'
     state: present
   become: yes
 
-- name: Allow trust authentication for local connections temporarily
+- name: Allow trust authentication for local connections
   lineinfile:
     path: "{{ pg_hba_path }}"
-    regexp: '^local'
+    regexp: '^local   all             all                                     .*$'
     line: 'local   all             all                                     trust'
     state: present
   become: yes
 
-- name: Reload PostgreSQL to apply temporary trust changes
+- name: Reload PostgreSQL to apply trust changes
   systemd:
     name: postgresql
     state: reloaded
@@ -80,27 +80,19 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
-- name: Allow md5 authentication for PostgreSQL
+- name: Revert authentication method to md5 for PostgreSQL
   lineinfile:
     path: "{{ pg_hba_path }}"
-    regexp: '^host'
+    regexp: '^host    all             all             127.0.0.1/32            .*$'
     line: 'host    all             all             127.0.0.1/32            md5'
     state: present
   become: yes
 
-- name: Allow md5 authentication for local connections
+- name: Revert authentication method to md5 for local connections
   lineinfile:
     path: "{{ pg_hba_path }}"
-    regexp: '^local'
+    regexp: '^local   all             all                                     .*$'
     line: 'local   all             all                                     md5'
-    state: present
-  become: yes
-
-- name: Allow md5 authentication for postgres user
-  lineinfile:
-    path: "{{ pg_hba_path }}"
-    regexp: '^local   all             postgres'
-    line: 'local   all             postgres                                md5'
     state: present
   become: yes
 
