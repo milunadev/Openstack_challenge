@@ -12,10 +12,73 @@ chmod +x ./utilities/export_tfvars.sh
 ./utilities/export_tfvars.sh
 ```
 Una vez seteadas las variables generales, exportamos tambien la variable password
-
-
 ```bash
 export TF_VAR_os_password='**************'
+```
+
+## ORGANIZACION DEL REPOSITORIO
+
+- **Ansible_dir**: 
+Contiene todos los playbooks y roles de Ansible necesarios para la configuración y provisión de las instancias de Puppet.
+    - **Playbooks:**: Directorio que incluye los playbooks principales para la solicitud y firma de certificados, así como la verificación del estado de los agentes y servidor Puppet.
+    - **Roles:** Directorio que contiene los roles de Ansible organizados según la función que desempeñan.
+        - puppet_agent: Rol para la configuración de los agentes Puppet.
+            - handlers: Contiene manejadores que se activan en respuesta a ciertos eventos.
+            - tasks: Incluye las tareas necesarias para configurar el agente Puppet.
+            - templates: Plantillas utilizadas para la configuración del agente Puppet.
+        -   puppet_db: Rol para la configuración de la base de datos PuppetDB.
+        - puppet_server: Rol para la configuración del servidor Puppet.
+    - inventory.tpl: Plantilla del inventario de Ansible.
+    - site.yml: Playbook principal que orquesta la ejecución de los otros playbooks y roles.
+- keys: Contiene las llaves SSH utilizadas para acceder a las instancias desplegadas en OpenStack.
+- modules/puppet-infra: Módulo de Terraform para la infraestructura de Puppet.
+- testing_dir: Contiene scripts y archivos para pruebas.
+utilities: Scripts y utilidades adicionales.
+- config.tf: Archivo de configuración general del proyecto.
+- main.tf: Archivo principal de Terraform para el despliegue de infraestructura.
+- outputs.tf: Define las salidas del despliegue de Terraform.
+- variables.tf: Define las variables utilizadas en el despliegue de Terraform.
+
+```bash
+openstack-reto
+├── ansible_dir
+│   ├── playbooks
+│   │   ├── request_certificate.yml
+│   │   ├── sign_certificate.yml
+│   │   └── verify_puppet.yml
+│   ├── roles
+│   │   ├── puppet_agent
+│   │   │   ├── handlers
+│   │   │   ├── tasks
+│   │   │   └── templates
+│   │   ├── puppet_db
+│   │   └── puppet_server
+│   ├── inventory.tpl
+│   └── site.yml
+├── keys
+├── modules
+│   └── puppet-infra
+│       ├── public_infra
+│       ├── puppet-agent
+│       ├── puppet-db
+│       ├── puppet-server
+│       ├── config.tf
+│       ├── main.tf
+│       ├── outputs.tf
+│       └── variables.tf
+├── static
+├── testing_dir
+│   ├── __init__.py
+│   ├── main.py
+│   └── simpletest.py
+├── utilities
+│   └── export_tfvars.sh
+├── .gitignore
+├── config.tf
+├── main.tf
+├── outputs.tf
+├── readme.md
+└── variables.tf
 ```
 
 

@@ -64,7 +64,7 @@ resource "openstack_compute_instance_v2" "public_instance" {
 resource "null_resource" "reboot_public_instance" {
   provisioner "local-exec" {
     command = <<-EOT
-      sleep 45
+      sleep 10
       openstack server reboot ${openstack_compute_instance_v2.public_instance.id}
       sleep 45
     EOT
