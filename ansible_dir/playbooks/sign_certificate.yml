@@ -4,6 +4,7 @@
     - name: List all requested certificates
       command: /opt/puppetlabs/bin/puppetserver ca list --all
       register: cert_list
+      become: yes
 
     - name: Debug certificate list
       debug:

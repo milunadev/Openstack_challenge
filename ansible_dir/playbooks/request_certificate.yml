@@ -5,6 +5,7 @@
       command: /opt/puppetlabs/bin/puppet agent --test 
       register: puppet_cert_request
       ignore_errors: true
+      become: yes
 
     - name: Check if certificate request was successful
       debug:
