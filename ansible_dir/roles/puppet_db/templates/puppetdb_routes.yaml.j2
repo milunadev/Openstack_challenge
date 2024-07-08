@@ -1,0 +1,10 @@
+master:
+  facts:
+    terminus: puppetdb
+    cache: yaml
+  catalog:
+    terminus: compiler
+    cache: puppetdb
+  node:
+    terminus: exec
+    cache: puppetdb
