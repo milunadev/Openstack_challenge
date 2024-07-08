@@ -19,6 +19,7 @@ module "puppet-infra" {
 }
 
 resource "local_file" "inventory" {
+  depends_on = [module.puppet-infra]
   content = templatefile("${path.module}/ansible_dir/inventory.tpl", {
     puppet_agents_ips = module.puppet-infra.puppet_agents_ips
     puppet_server_ip = module.puppet-infra.puppet_server_ip
