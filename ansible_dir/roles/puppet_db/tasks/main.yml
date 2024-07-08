@@ -79,6 +79,15 @@
     state: reloaded
   become: yes
 
+- name: Set password for postgres user
+  postgresql_user:
+    name: postgres
+    password: 'postgrespassword'
+    state: present
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
 - name: Configure PostgreSQL for PuppetDB
   postgresql_db:
     name: puppetdb
