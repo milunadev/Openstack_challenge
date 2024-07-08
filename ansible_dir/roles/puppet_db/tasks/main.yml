@@ -4,7 +4,6 @@
     update_cache: yes
   become: yes
 
-  
 - name: Ensure psycopg2 is installed
   apt:
     name: python3-psycopg2
@@ -71,11 +70,25 @@
     state: present
   become: yes
 
+- name: Allow trust authentication for postgres user
+  lineinfile:
+    path: "{{ pg_hba_path }}"
+    regexp: '^local   all             postgres                                .*$'
+    line: 'local   all             postgres                                trust'
+    state: present
+  become: yes
+
 - name: Reload PostgreSQL to apply trust changes
   systemd:
     name: postgresql
     state: reloaded
   become: yes
+
+- name: Wait for PostgreSQL to reload
+  wait_for:
+    path: /var/run/postgresql/.s.PGSQL.5432
+    state: present
+    timeout: 15
 
 - name: Set password for postgres user
   postgresql_user:
@@ -99,6 +112,14 @@
     path: "{{ pg_hba_path }}"
     regexp: '^local   all             all                                     .*$'
     line: 'local   all             all                                     md5'
+    state: present
+  become: yes
+
+- name: Revert authentication method to md5 for postgres user
+  lineinfile:
+    path: "{{ pg_hba_path }}"
+    regexp: '^local   all             postgres                                .*$'
+    line: 'local   all             postgres                                md5'
     state: present
   become: yes
 
