@@ -149,12 +149,6 @@
     dest: /etc/puppetlabs/puppet/routes.yaml
   become: yes
 
-- name: Restart Puppet Server
-  systemd:
-    name: puppetserver
-    state: restarted
-  become: yes
-
 - name: Check PuppetDB status
   command: systemctl status puppetdb
   register: puppetdb_status
