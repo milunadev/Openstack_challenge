@@ -34,7 +34,7 @@ resource "local_file" "inventory" {
 
 resource "null_resource" "wait_for_public_instance" {
   provisioner "local-exec" {
-    command = "sleep 40 && ping -c 8 ${module.puppet-infra.public_instance_ip}"
+    command = "sleep 60 && ping -c 8 ${module.puppet-infra.public_instance_ip}"
   }
 
   depends_on = [module.puppet-infra]

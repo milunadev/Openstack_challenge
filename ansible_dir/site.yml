@@ -2,11 +2,20 @@
 - hosts: puppet_agents
   roles:
     - { role: puppet_agent, tags: 'puppet-agent' }
-  
+  vars:
+    puppet_server_ip: "{{ puppet_server_ip }}"
+    puppet_server_hostname: "{{ puppet_server_hostname }}"
+
 - hosts: puppet_server
   roles:
     - { role: puppet_server, tags: 'puppet-server' }
+  vars:
+    puppet_server_hostname: "{{ puppet_server_hostname }}"
+    puppet_db_ip: "{{ puppet_db_ip }}"
+    puppet_db_hostname: "{{ puppet_db_hostname }}"
 
 - hosts: puppet_db
   roles:
     - { role: puppet_db, tags: 'puppet-db' }
+  vars:
+    puppet_db_hostname: "{{ puppet_db_hostname }}"

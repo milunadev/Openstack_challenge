@@ -41,12 +41,6 @@
     dest: /etc/puppetlabs/puppet/puppet.conf
   become: yes
 
-- name: Request certificate from Puppet Server
-  command: /opt/puppetlabs/puppet/bin/puppet agent --test --waitforcert=0
-  register: puppet_request_certificate
-  failed_when: puppet_request_certificate.rc != 0 and 'has not been signed yet' not in puppet_request_certificate.stdout
-  become: yes
-
 - name: Restart Puppet agent
   systemd:
     name: puppet
