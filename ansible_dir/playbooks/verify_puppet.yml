@@ -1,0 +1,37 @@
+---
+- hosts: puppet_agents
+  tasks:
+    - name: Verify that the Puppet agent has a signed certificate
+      command: /opt/puppetlabs/bin/puppet agent --test
+      register: puppet_agent_test
+      ignore_errors: true
+      become: yes
+
+    - name: Debug Puppet agent test result
+      debug:
+        var: puppet_agent_test.stdout
+
+    - name: Check Puppet agent status
+      systemd:
+        name: puppet
+        state: started
+        enabled: true
+      become: yes
+
+- hosts: puppet_server
+  tasks:
+    - name: Verify that the Puppet server is running
+      systemd:
+        name: puppetserver
+        state: started
+        enabled: true
+      become: yes
+
+    - name: Check Puppet server status
+      command: systemctl status puppetserver
+      register: puppetserver_status
+      become: yes
+
+    - name: Debug Puppet server status
+      debug:
+        var: puppetserver_status.stdout
