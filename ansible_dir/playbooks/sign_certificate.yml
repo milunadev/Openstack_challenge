@@ -1,0 +1,15 @@
+# ansible/playbooks/sign_certificates.yml
+---
+- hosts: puppet_server
+  tasks:
+    - name: List all requested certificates
+      command: /opt/puppetlabs/bin/puppetserver ca list --all
+      register: cert_list
+
+    - name: Debug certificate list
+      debug:
+        var: cert_list.stdout
+
+    - name: Sign all requested certificates
+      command: /opt/puppetlabs/bin/puppetserver ca sign --all
+      when: "'Requested Certificates:' in cert_list.stdout"

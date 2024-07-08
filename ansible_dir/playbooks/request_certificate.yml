@@ -1,0 +1,12 @@
+# ansible/playbooks/request_certificates.yml
+---
+- hosts: puppet_agents
+  tasks:
+    - name: Request certificate from Puppet CA
+      command: /opt/puppetlabs/bin/puppet agent --test --waitforcert=60
+      register: puppet_cert_request
+      ignore_errors: true
+
+    - name: Check if certificate request was successful
+      debug:
+        var: puppet_cert_request.stdout
