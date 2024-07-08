@@ -115,6 +115,7 @@
     name: puppetdb
     password: 'puppetdbpassword'
     priv: 'puppetdb:ALL'
+    db: puppetdb
     state: present
   become: yes
   vars:
