@@ -36,9 +36,22 @@
     state: started
   become: yes
 
+- name: Get PostgreSQL version
+  command: psql -V
+  register: postgresql_version_output
+  become: yes
+
+- name: Set PostgreSQL version fact
+  set_fact:
+    postgresql_version: "{{ postgresql_version_output.stdout.split(' ')[2].split('.')[0] }}"
+
+- name: Set the pg_hba.conf path
+  set_fact:
+    pg_hba_path: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
+
 - name: Allow md5 authentication for PostgreSQL
   lineinfile:
-    path: /etc/postgresql/12/main/pg_hba.conf
+    path: "{{ pg_hba_path }}"
     regexp: '^host'
     line: 'host    all             all             127.0.0.1/32            md5'
     state: present
@@ -46,7 +59,7 @@
 
 - name: Allow md5 authentication for local connections
   lineinfile:
-    path: /etc/postgresql/12/main/pg_hba.conf
+    path: "{{ pg_hba_path }}"
     regexp: '^local'
     line: 'local   all             all                                     md5'
     state: present
