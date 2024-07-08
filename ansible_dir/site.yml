@@ -1,12 +1,12 @@
 ---
 - hosts: puppet_agents
   roles:
-    - puppet_agent
+    - { role: puppet_agent, tags: 'puppet-agent' }
   
 - hosts: puppet_server
   roles:
-    - puppet_server
+    - { role: puppet_server, tags: 'puppet-server' }
 
 - hosts: puppet_db
   roles:
-    - puppet_db
+    - { role: puppet_db, tags: 'puppet-db' }
