@@ -65,6 +65,14 @@
     state: present
   become: yes
 
+- name: Allow md5 authentication for postgres user
+  lineinfile:
+    path: "{{ pg_hba_path }}"
+    regexp: '^local   all             postgres'
+    line: 'local   all             postgres                                md5'
+    state: present
+  become: yes
+
 - name: Reload PostgreSQL to apply changes
   systemd:
     name: postgresql
