@@ -15,10 +15,65 @@ Una vez seteadas las variables generales, exportamos tambien la variable passwor
 ```bash
 export TF_VAR_os_password='**************'
 ```
+El script importa las librerias necesarias y a traves de una funcion load_vars, crga las variables de ambiente usadas por terraform que se setearon en el script anterior.
+La fixture plan inicializa el entorno de Terraform y crea un plan con las variables cargadas.
+```python
+@pytest.fixture
+def plan():
+    tf = tftest.TerraformTest(tfdir='.')  
+    tf.setup()
+    plan = tf.plan(output=True, tf_vars=vars)
+    return plan
+```
+- Prueba de variables: La función test_variables verifica que las variables necesarias estén presentes en el plan de Terraform.
+```python
+def test_variables(plan):
+    tf_vars = plan.variables
+    print(f"Terraform Variables: {tf_vars}")
+    assert "os_username" in tf_vars, "Missing os_username"
+    assert "os_project_name" in tf_vars, "Missing os_project_name"
+```
+- Prueba de outputs: La función test_outputs verifica que las salidas esperadas estén presentes en el plan de Terraform.
+```python
+def test_outputs(plan):
+    outputs = plan.outputs
+    print(f"Terraform Outputs: {outputs}")
+    assert "puppet_agents_ips" in outputs
+    assert "puppet_server_ip" in outputs
+    assert "puppet_db_ip" in outputs
+    assert "public_instance_public_ip" in outputs
+    assert "puppet_agent_name" in outputs
+    assert "puppet_server_name" in outputs
+    assert "puppet_db_name" in outputs
+    assert "public_instance_private_ip" in outputs
+```
+- Prueba del agente puppet: La función test_puppet_agent_configuration valida la configuración de las instancias de Puppet Agent.
+```python
+def test_puppet_agent_configuration(plan):
+    puppet_agents = [resource for resource in plan.root_module.resources.values() if resource["type"] == "openstack_compute_instance_v2" and "puppet-agent" in resource["name"]]
+
+    for agent in puppet_agents:
+        assert agent["values"]["flavor_name"] == "m1.small", "Puppet Agent flavor mismatch"
+        assert agent["values"]["key_pair"] == "puppet-agent-key", "Puppet Agent key pair mismatch"
+        assert agent["values"]["security_groups"] == ["puppet-agent-sg"], "Puppet Agent security group mismatch"
+```
+- Prueba Sin Puppet Agents: La función test_no_puppet_agents verifica que no se creen instancias de Puppet Agent cuando el conteo se establece en 0.
+```python
+def test_no_puppet_agents():
+    tf_no_agents = tftest.TerraformTest(tfdir='.')
+    tf_no_agents.setup()
+    no_agents_plan = tf_no_agents.plan(output=True, tf_vars={**vars, "puppet_agent_parameters": {"count": 0}})
+    
+    puppet_agents = [resource for resource in no_agents_plan.root_module.resources.values() if resource["type"] == "openstack_compute_instance_v2" and "puppet-agent" in resource["name"]]
+    assert len(puppet_agents) == 0, "There should be no Puppet Agents"
+```
 
 ## TESTING DE TERRAFORM
+Para el testing se creo un script para instalar las librerias en un ambiente virtual y ejecuta el script de python.
 ```bash
-
+#Para esto debemos encontrarnos en la ruta Openstack_challenge, osea la ruta raiz del repositorio
+chmod + ./utilities/*
+./utilities/terraform_test.sh 
 ```
 
 # MODULO DE TERRAFORM
