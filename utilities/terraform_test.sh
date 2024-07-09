@@ -6,6 +6,7 @@ echo "------------------------------"
 
 # Define the virtual environment directory
 VENV_DIR="test_venv"
+REQ_FILE="./utilities/requirements.txt"
 
 # Check if python3 is installed
 if ! command -v python3 &> /dev/null; then
@@ -30,11 +31,18 @@ if ! command -v pip &> /dev/null; then
     exit 1
 fi
 
+# Check if requirements.txt exists
+if [ ! -f "$REQ_FILE" ]; then
+    echo "Requirements file not found: $REQ_FILE"
+    deactivate
+    exit 1
+fi
+
 # Check if the requirements are already installed
 REQUIREMENTS_INSTALLED=$(pip list --format=columns | grep -E 'pytest|tftest')
 if [ -z "$REQUIREMENTS_INSTALLED" ]; then
     echo "Installing requirements..."
-    pip install -r requirements.txt
+    pip install -r "$REQ_FILE"
 else
     echo "Requirements already installed."
 fi
