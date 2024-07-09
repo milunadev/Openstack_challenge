@@ -25,6 +25,15 @@ export TF_VAR_os_password='**************'
 - private_network_2_name: Nombre de la segunda red privada.
 - instance_image_name: Nombre de la imagen de la instancia.
 - puppet_server_parameters: Parámetros de configuración para la instancia del Puppet Server. Aqui el parametro **flavour_name** se usara para escalamiento horizontal.
+    ```bash
+        variable "puppet_server_parameters" {
+            default = {
+                flavor_name   = "m1.small"
+                volume_size   = 10
+                key_pair = "PuppetKey"
+            }
+        }
+    ```
 - puppet_agent_parameters: Parámetros de configuración para las instancias de Puppet Agents. Aqui los parametros **count** y **flavor_name** se usan para escalamiento vertical y horizontal.
     ```bash
         variable "puppet_agent_parameters" {
