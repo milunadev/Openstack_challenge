@@ -41,7 +41,7 @@ resource "openstack_networking_port_v2" "private_interface" {
 
 
 resource "openstack_networking_secgroup_v2" "public_instance_sg" {
-  name = "${var.public_instance_parameters["instance_name"]}-SG"
+  name = "${var.public_instance_parameters["instance_name"]}-security-group"
   description = "Security group for public instance"
 }
 
