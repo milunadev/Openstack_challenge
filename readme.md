@@ -15,6 +15,13 @@ Una vez seteadas las variables generales, exportamos tambien la variable passwor
 ```bash
 export TF_VAR_os_password='**************'
 ```
+## TESTING DE TERRAFORM
+Para el testing se creo un script para instalar las librerias en un ambiente virtual y ejecuta el script de python.
+```bash
+#Para esto debemos encontrarnos en la ruta Openstack_challenge, osea la ruta raiz del repositorio
+chmod + ./utilities/*
+./utilities/terraform_test.sh 
+```
 El script importa las librerias necesarias y a traves de una funcion load_vars, crga las variables de ambiente usadas por terraform que se setearon en el script anterior.
 La fixture plan inicializa el entorno de Terraform y crea un plan con las variables cargadas.
 ```python
@@ -42,7 +49,7 @@ def test_outputs(plan):
     assert "puppet_server_ip" in outputs
     assert "puppet_db_ip" in outputs
     assert "public_instance_public_ip" in outputs
-    assert "puppet_agent_name" in outputs
+    assert "puppet_agents_names" in outputs
     assert "puppet_server_name" in outputs
     assert "puppet_db_name" in outputs
     assert "public_instance_private_ip" in outputs
@@ -56,6 +63,7 @@ def test_puppet_agent_configuration(plan):
         assert agent["values"]["flavor_name"] == "m1.small", "Puppet Agent flavor mismatch"
         assert agent["values"]["key_pair"] == "puppet-agent-key", "Puppet Agent key pair mismatch"
         assert agent["values"]["security_groups"] == ["puppet-agent-sg"], "Puppet Agent security group mismatch"
+
 ```
 - Prueba Sin Puppet Agents: La función test_no_puppet_agents verifica que no se creen instancias de Puppet Agent cuando el conteo se establece en 0.
 ```python
@@ -67,14 +75,7 @@ def test_no_puppet_agents():
     puppet_agents = [resource for resource in no_agents_plan.root_module.resources.values() if resource["type"] == "openstack_compute_instance_v2" and "puppet-agent" in resource["name"]]
     assert len(puppet_agents) == 0, "There should be no Puppet Agents"
 ```
-
-## TESTING DE TERRAFORM
-Para el testing se creo un script para instalar las librerias en un ambiente virtual y ejecuta el script de python.
-```bash
-#Para esto debemos encontrarnos en la ruta Openstack_challenge, osea la ruta raiz del repositorio
-chmod + ./utilities/*
-./utilities/terraform_test.sh 
-```
+![alt text](./static/test.png)
 
 # MODULO DE TERRAFORM
 ### VARIABLES
@@ -313,12 +314,12 @@ Para el momento de presentacion del reto, la arquitectura propuesta era la sigui
 2. Infraestructura puppet (agente,servidor,db) en una red privada. Unicamente accesible por el bastion host.
 
 La instancia publica se creaba en la red publica y se agregaba una interface de red secundaria que permitia conectarse a la red privada donde se encontraba la infraestructura puppet y asi aprovisionar las intancias mediante los playbook de Ansible.
-![alt text](image.png)
-![](image-1.png)
+![alt text](./static/image.png)
+![](./static/image-1.png)
 
 Sin embargo, a lo largo del reto, apenas culminaba el despliegue de infraestructura, la conectividad hacia la instancia publica a traves de su IP publica era inconsistente, con una considerable perdida de paquetes.
 
-![alt text](<Captura de pantalla 2024-07-08 a la(s) 5.49.14 p. m..png>)
+![alt text](./static/conectividad.png)
 
 Hasta esta presentacion la unica manera de restablecer una conectividad al 100% es reiniciando la instancia ya sea por CLI o por GUI. Es por ello que en el modulo de terraform se incluye un null resource que reinicia la instancia mediante el CLI.
 
