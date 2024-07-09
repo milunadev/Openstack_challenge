@@ -42,12 +42,13 @@ def test_resources_exist(plan):
     resource_types = [resource["type"] for resource in resources.values()]
 
     expected_resources = [
-        "module","null_resource"
+        "local_file",
+        "null_resource",
+        "module"  # Los módulos se representan como un tipo de recurso en los planes de Terraform
     ]
 
     for expected_resource in expected_resources:
         assert expected_resource in resource_types, f"Missing resource: {expected_resource}"
-
 def test_puppet_agent_configuration(plan):
     puppet_agents = [resource for resource in plan.root_module.resources.values() if resource["type"] == "openstack_compute_instance_v2" and "puppet-agent" in resource["name"]]
 
