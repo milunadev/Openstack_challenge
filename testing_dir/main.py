@@ -19,7 +19,7 @@ vars = load_tf_vars()  # Llamar explícitamente a la función y almacenar las va
 
 @pytest.fixture
 def plan():
-    tf = tftest.TerraformTest(tfdir='../')  # Asegúrate de que esta ruta sea correcta
+    tf = tftest.TerraformTest(tfdir='.')  # Asegúrate de que esta ruta sea correcta
     tf.setup()
     plan = tf.plan(output=True, tf_vars=vars)
     return plan
