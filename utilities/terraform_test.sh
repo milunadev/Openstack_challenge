@@ -49,7 +49,7 @@ fi
 
 # Run the tests
 echo "Running tests..."
-pytest ./testing_dir/main.py -v
+pytest ./testing_dir/main.py -v -s
 
 # Deactivate the virtual environment
 deactivate

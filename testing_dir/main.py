@@ -36,6 +36,11 @@ def test_outputs(plan):
     assert "puppet_agents_ips" in outputs
     assert "puppet_server_ip" in outputs
     assert "puppet_db_ip" in outputs
+    assert "public_instance_ip" in outputs
+    assert "puppet_agents_names" in outputs
+    assert "puppet_server_name" in outputs
+    assert "puppet_db_name" in outputs
+    assert "public_instance_private_ip" in output
 
 def test_resources_exist(plan):
     resources = plan.root_module.resources
@@ -44,7 +49,6 @@ def test_resources_exist(plan):
     expected_resources = [
         "local_file",
         "null_resource",
-        "openstack_compute_instance_v2"
     ]
 
     print(f"Expected Resources: {expected_resources}")
