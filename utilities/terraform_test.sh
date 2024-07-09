@@ -9,7 +9,7 @@ VENV_DIR="test_venv"
 # Check if the virtual environment exists
 if [ ! -d "$VENV_DIR" ]; then
     echo "Creating virtual environment..."
-    python -m venv "$VENV_DIR"
+    python3 -m venv "$VENV_DIR"
 fi
 
 # Activate the virtual environment
@@ -17,10 +17,10 @@ echo "Activating virtual environment..."
 source "$VENV_DIR/bin/activate"
 
 # Check if the requirements are already installed
-REQUIREMENTS_INSTALLED=$(pip list --format=columns | grep -E 'pytest|tftest')
+REQUIREMENTS_INSTALLED=$(pip3 list --format=columns | grep -E 'pytest|tftest')
 if [ -z "$REQUIREMENTS_INSTALLED" ]; then
     echo "Installing requirements..."
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 else
     echo "Requirements already installed."
 fi
