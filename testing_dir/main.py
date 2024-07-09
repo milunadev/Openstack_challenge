@@ -42,7 +42,7 @@ def test_resources_exist(plan):
     resource_types = [resource["type"] for resource in resources.values()]
 
     expected_resources = [
-        "puppet-infra"
+        "module","null_resource"
     ]
 
     for expected_resource in expected_resources:
