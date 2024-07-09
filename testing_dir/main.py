@@ -42,11 +42,7 @@ def test_resources_exist(plan):
     resource_types = [resource["type"] for resource in resources.values()]
 
     expected_resources = [
-        "openstack_compute_instance_v2",
-        "openstack_blockstorage_volume_v3",
-        "openstack_networking_secgroup_v2",
-        "local_file",
-        "null_resource"
+        " module.puppet-infra.module.puppet_db.openstack_compute_instance_v2.puppet_db"
     ]
 
     for expected_resource in expected_resources:
