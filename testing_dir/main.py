@@ -12,14 +12,14 @@ def load_tf_vars():
         'os_user_domain_name': os.getenv('TF_VAR_os_user_domain_name'),
         'os_project_domain_id': os.getenv('TF_VAR_os_project_domain_id')
     }
-    print(f"Loaded TF Vars: {tf_vars}")  # Imprimir variables para depuración
+    print(f"Loaded TF Vars: {tf_vars}")  
     return tf_vars
 
-vars = load_tf_vars()  # Llamar explícitamente a la función y almacenar las variables
+vars = load_tf_vars()  
 
 @pytest.fixture
 def plan():
-    tf = tftest.TerraformTest(tfdir='.')  # Asegúrate de que esta ruta sea correcta
+    tf = tftest.TerraformTest(tfdir='.')  
     tf.setup()
     plan = tf.plan(output=True, tf_vars=vars)
     return plan
@@ -47,6 +47,7 @@ def test_resources_exist(plan):
         "openstack_compute_instance_v2"
     ]
 
+    print(f"Expected Resources: {expected_resources}")
     for expected_resource in expected_resources:
         assert expected_resource in resource_types, f"Missing resource: {expected_resource}"
 def test_puppet_agent_configuration(plan):
