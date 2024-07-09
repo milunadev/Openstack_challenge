@@ -39,13 +39,21 @@ variable "puppet_server_parameters" {
 }
 
 variable "puppet_agent_parameters" {
+  description = "Parameters for puppet agent instances. Include number of instances to horizontal scale and flavor name to vertical scale"
+  type = map(any)
   default = {
-    count = 2
-    flavor_name   = "m1.small"
-    volume_size   = 10
-    key_pair = "puppet-agent-key"
+    count       = 2
+    flavor_name = "m1.small"
+    volume_size = 10
+    key_pair    = "puppet-agent-key"
+  }
+
+  validation {
+    condition = var.puppet_agent_parameters["count"] >= 0 && var.puppet_agent_parameters["count"] <= 100
+    error_message = "The number of Puppet agents must be between 0 and 100."
   }
 }
+
 
 variable "puppet_db_parameters" {
   default = {

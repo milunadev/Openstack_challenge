@@ -2,6 +2,19 @@ import os
 import tftest
 import pytest
 
+def test_resources_exist(plan):
+    resources = plan.root_module.resources
+    resource_types = [resource["type"] for resource in resources.values()]
+    
+    expected_resources = [
+        "openstack_compute_instance_v2",
+        "openstack_blockstorage_volume_v3",
+        "openstack_networking_secgroup_v2",
+    ]
+
+    for expected_resource in expected_resources:
+        assert expected_resource in resource_types, f"Missing resource: {expected_resource}"
+
 def load_tf_vars():
     tf_vars = {
         'os_username': os.getenv('TF_VAR_os_username'),
