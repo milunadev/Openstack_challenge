@@ -44,7 +44,7 @@ def test_resources_exist(plan):
     expected_resources = [
         "local_file",
         "null_resource",
-        "module"  # Los módulos se representan como un tipo de recurso en los planes de Terraform
+        "openstack_compute_instance_v2"
     ]
 
     for expected_resource in expected_resources:
