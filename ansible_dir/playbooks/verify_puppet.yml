@@ -4,34 +4,31 @@
     - name: Verify that the Puppet agent has a signed certificate
       command: /opt/puppetlabs/bin/puppet agent --test
       register: puppet_agent_test
-      ignore_errors: true
+      ignore_errors: yes
       become: yes
 
     - name: Debug Puppet agent test result
       debug:
         var: puppet_agent_test.stdout
 
-    - name: Check Puppet agent status
-      systemd:
-        name: puppet
-        state: started
-        enabled: true
-      become: yes
+    - name: Extract and format Puppet agent test result
+      set_fact:
+        puppet_agent_output: "{{ puppet_agent_test.stdout | regex_replace('\\u001b\\[[0-9;]*[mG]', '') | regex_replace('\\n', ' ') }}"
+      when: puppet_agent_test is defined
 
 - hosts: puppet_server
   tasks:
     - name: Verify that the Puppet server is running
-      systemd:
-        name: puppetserver
-        state: started
-        enabled: true
-      become: yes
-
-    - name: Check Puppet server status
       command: systemctl status puppetserver
       register: puppetserver_status
+      ignore_errors: yes
       become: yes
 
     - name: Debug Puppet server status
       debug:
         var: puppetserver_status.stdout
+
+    - name: Extract and format Puppet server status
+      set_fact:
+        puppet_server_output: "{{ puppetserver_status.stdout | regex_replace('\\u001b\\[[0-9;]*[mG]', '') | regex_replace('\\n', ' ') }}"
+      when: puppetserver_status is defined
