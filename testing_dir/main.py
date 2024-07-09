@@ -36,7 +36,7 @@ def test_outputs(plan):
     assert "puppet_agents_ips" in outputs
     assert "puppet_server_ip" in outputs
     assert "puppet_db_ip" in outputs
-    assert "public_instance_ip" in outputs
+    assert "public_instance_public_ip" in outputs
     assert "puppet_agents_names" in outputs
     assert "puppet_server_name" in outputs
     assert "puppet_db_name" in outputs
