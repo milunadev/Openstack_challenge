@@ -2,7 +2,7 @@
 - hosts: puppet_agents
   tasks:
     - name: Request certificate from Puppet CA
-      command: /opt/puppetlabs/bin/puppet agent --test
+      command: /opt/puppetlabs/bin/puppet agent --test --waitforcert 15
       register: puppet_cert_request
       ignore_errors: true
       become: yes

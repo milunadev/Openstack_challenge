@@ -49,7 +49,3 @@
     state: started
   become: yes
 
-- name: Debug Puppet Server status
-  debug:
-    var: puppetserver_status
-

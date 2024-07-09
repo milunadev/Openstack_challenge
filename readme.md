@@ -16,6 +16,118 @@ Una vez seteadas las variables generales, exportamos tambien la variable passwor
 export TF_VAR_os_password='**************'
 ```
 
+# MODULO DE TERRAFORM
+### VARIABLES
+- project_name: Nombre del proyecto.
+- deploy_public_instance: Define si se despliega una instancia pública.
+- public_network_name: Nombre de la red pública.
+- private_network_1_name: Nombre de la primera red privada.
+- private_network_2_name: Nombre de la segunda red privada.
+- instance_image_name: Nombre de la imagen de la instancia.
+- puppet_server_parameters: Parámetros de configuración para la instancia del Puppet Server. Aqui el parametro **flavour_name** se usara para escalamiento horizontal.
+- puppet_agent_parameters: Parámetros de configuración para las instancias de Puppet Agents. Aqui los parametros **count** y **flavor_name** se usan para escalamiento vertical y horizontal.
+    ```bash
+        variable "puppet_agent_parameters" {
+            default = {
+                count = 2
+                flavor_name   = "m1.small"
+                volume_size   = 10
+                key_pair = "puppet-agent-key"
+            }
+        }
+    ```
+- puppet_db_parameters: Parámetros de configuración para la instancia de PuppetDB.
+- public_instance_parameters: Parámetros de configuración para la instancia pública.
+
+### RECURSOS PRINCIPALES
+1. Modulo puppet_infra: Este módulo despliega la infraestructura de Puppet utilizando los parámetros y variables definidas.
+
+```bash
+module "puppet-infra" {
+  source = "./modules/puppet-infra"
+  providers = {
+    openstack = openstack
+  }
+  .
+  .
+  .
+  puppet_server_parameters     = var.puppet_server_parameters
+  puppet_agent_parameters      = var.puppet_agent_parameters
+  puppet_db_parameters         = var.puppet_db_parameters
+}
+```
+
+2. Recurso de inventario: Genera un archivo de inventario Ansible basado en las IPs de las instancias desplegadas.
+```bash
+resource "local_file" "inventory" {
+  depends_on = [module.puppet-infra]
+  content = templatefile("${path.module}/ansible_dir/inventory.tpl", {
+    puppet_agents_ips = module.puppet-infra.puppet_agents_ips
+    puppet_server_ip  = module.puppet-infra.puppet_server_ip
+    puppet_db_ip      = module.puppet-infra.puppet_db_ip
+  })
+  filename = "${path.module}/ansible_dir/inventory/hosts.ini"
+}
+
+```
+3. Recurso de espera a la instancia publica. Esto debido al bug descrito una seccion posterior.
+4. Recurso para subir el directorio Ansible a la instancia publica.
+```bash
+resource "null_resource" "upload_ansible_dir" {
+  depends_on = [module.puppet-infra, local_file.inventory, null_resource.wait_for_public_instance]
+  provisioner "local-exec" {
+    command = "scp -i ../puppetkey.pem -o StrictHostKeyChecking=no -r ./ansible_dir/* ubuntu@${module.puppet-infra.public_instance_ip}:/home/ubuntu/ansible_dir"
+  }
+}
+```
+5. Aprovisionamiento de recursos puppet en la infraestructura. Este recurso ejecuta el playbook de Ansible para configurar Puppet en las instancias.
+```bash
+resource "null_resource" "provision_puppet" {
+  depends_on = [null_resource.upload_ansible_dir]
+  provisioner "local-exec" {
+    command = <<-EOT
+      ssh-keyscan -H ${module.puppet-infra.public_instance_ip} >> ~/.ssh/known_hosts
+      ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${module.puppet-infra.public_instance_ip} << 'EOF'
+        ansible-playbook -i /home/ubuntu/ansible_dir/inventory/hosts.ini /home/ubuntu/ansible_dir/site.yml --extra-vars "puppet_server_ip=${module.puppet-infra.puppet_server_ip} puppet_db_ip=${module.puppet-infra.puppet_db_ip} puppet_server_hostname=${module.puppet-infra.puppet_server_name} puppet_db_hostname=${module.puppet-infra.puppet_db_name}" 
+      EOF
+    EOT
+  }
+}
+```
+6. Este recurso solicita certificados desde el Puppet Agent.
+```bash
+resource "null_resource" "request_certificate" {
+  depends_on = [null_resource.provision_puppet]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${module.puppet-infra.public_instance_ip} << 'EOF'
+        ansible-playbook -i /home/ubuntu/ansible_dir/inventory/hosts.ini /home/ubuntu/ansible_dir/playbooks/request_certificate.yml
+      EOF
+    EOT
+  }
+}
+```
+7. Este recurso firma los certificados solicitados en el Puppet Server.
+```bash
+resource "null_resource" "sign_certificate" {
+  depends_on = [null_resource.request_certificate]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      ssh -i ../puppetkey.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@${module.puppet-infra.public_instance_ip} << 'EOF'
+        ansible-playbook -i /home/ubuntu/ansible_dir/inventory/hosts.ini /home/ubuntu/ansible_dir/playbooks/sign_certificate.yml
+      EOF
+    EOT
+  }
+}
+```
+
+
+
+
+
+
 ## ORGANIZACION DEL REPOSITORIO
 
 - **Ansible_dir**: 
@@ -113,16 +225,3 @@ resource "null_resource" "reboot_public_instance" {
 ### CONEXION A INSTANCIAS INTERNAS
 
 
-```bash
-sudo ip addr add 192.168.10.232/24 dev ens9
-
-sudo ip link set dev ens9 up
-```
-
-```bash
-python3 -m venv tfvenv
-source tfvenv/bin/activate
-pip3 install tftest
-pip3 install pytest
-
-```
