@@ -1,6 +1,6 @@
 
 # REQUISITOS
-1. Clonamos el repositorio
+Clonamos el repositorio
 Este modulo de Terraform debe ejecutarse en una maquina que tenga acceso a la API de Openstack y este autenticado con el ambiente de Openstack, ya que se ejecutan algunos comandos del CLI.
 
 Tambien es necesario exportar las variables de configuracion del provider Openstack que usamos para desplegar infraestructura con Terraform.
@@ -14,6 +14,11 @@ chmod +x ./utilities/export_tfvars.sh
 Una vez seteadas las variables generales, exportamos tambien la variable password
 ```bash
 export TF_VAR_os_password='**************'
+```
+
+## TESTING DE TERRAFORM
+```bash
+
 ```
 
 # MODULO DE TERRAFORM
@@ -202,6 +207,50 @@ openstack-reto
 └── variables.tf
 ```
 
+### FLUJO DE RECURSOS CREADOS CON TERRAFORM
+1. Inicialización de Variables y Proveedores
+Variables de Configuración: Se definen las variables necesarias para configurar la infraestructura, incluyendo nombres de redes, imágenes de instancias, parámetros de Puppet Agents, Puppet Server y Puppet DB.
+Proveedores: Se configura el proveedor de OpenStack que se utilizará para gestionar los recursos en la nube.
+2. Generación de Claves y Pares de Claves
+Puppet Agents, Puppet Server y Puppet DB:
+Claves TLS: Se generan claves TLS privadas para cada tipo de instancia (Agents, Server, DB).
+Pares de Claves: Se crean pares de claves en OpenStack utilizando las claves TLS generadas.
+3. Creación de Volúmenes de Almacenamiento
+Volúmenes de Almacenamiento:
+Puppet Agents: Se crean volúmenes de almacenamiento para cada instancia de Puppet Agent.
+Puppet Server: Se crea un volumen de almacenamiento para la instancia del Puppet Server.
+Puppet DB: Se crea un volumen de almacenamiento para la instancia de Puppet DB.
+4. Creación de Grupos de Seguridad y Reglas
+Grupos de Seguridad:
+Se crean grupos de seguridad específicos para Puppet Agents, Puppet Server y Puppet DB.
+Reglas de Seguridad:
+Se definen reglas de seguridad para permitir el tráfico necesario (por ejemplo, SSH, ICMP, y puertos específicos de Puppet) dentro de los grupos de seguridad.
+5. Creación de Instancias de Computación
+Puppet Agents:
+Se crean las instancias de Puppet Agents en OpenStack utilizando los volúmenes y las claves generadas.
+Puppet Server:
+Se crea la instancia de Puppet Server.
+Puppet DB:
+Se crea la instancia de Puppet DB.
+Instancia Pública (opcional):
+Si se habilita, se crea una instancia pública para gestión y administración.
+6. Configuración y Aprovisionamiento
+Generación de Archivos de Inventario:
+Se crea un archivo de inventario de Ansible con la información de las IPs de las instancias creadas.
+Espera de la Instancia Pública:
+Se espera a que la instancia pública esté completamente desplegada y accesible.
+Carga de Directorios de Ansible:
+Se cargan los directorios de Ansible necesarios en la instancia pública.
+Ejecución de Playbooks de Ansible:
+Se ejecutan los playbooks de Ansible para configurar y aprovisionar las instancias de Puppet.
+Solicitud y Firma de Certificados:
+Los agentes de Puppet solicitan certificados al servidor Puppet y estos certificados son firmados.
+Verificación de la Configuración:
+Se verifica que todas las configuraciones y provisiones se han realizado correctamente.
+7. Outputs
+Direcciones IP y Nombres de Recursos:
+Se generan los outputs que contienen las direcciones IP y los nombres de las instancias de Puppet Agents, Puppet Server y Puppet DB.
+
 
 ### 🐞🐞 BUGS ACTUALES 😔
 Para el momento de presentacion del reto, la arquitectura propuesta era la siguiente.
@@ -231,6 +280,6 @@ resource "null_resource" "reboot_public_instance" {
   depends_on = [openstack_compute_instance_v2.public_instance]
 }
 ```
-### CONEXION A INSTANCIAS INTERNAS
+
 
 
